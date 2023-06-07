@@ -9,8 +9,12 @@ export default function MyComponent() {
       userEmail={process.env.NEXT_PUBLIC_MAGICBELL_USER_EMAIL as string}
       userKey={process.env.NEXT_PUBLIC_MAGICBELL_USER_KEY as string}
     >
-      <Subscriber />
-      <Info />
+      <div className="flex justify-center h-full w-full">
+        <section className="h-full max-w-screen-md">
+          <Subscriber />
+          <Info />
+        </section>
+      </div>
     </MagicBellProvider>
   )
 }

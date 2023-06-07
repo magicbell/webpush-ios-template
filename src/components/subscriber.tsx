@@ -49,8 +49,7 @@ export default function Subscriber() {
   }, [subscribeOptions])
 
   const handleSubscribe = async () => {
-    // this is true in customization mode, we use it to theme the dialog
-    const permission = await Notification.requestPermission()
+    await Notification.requestPermission()
     try {
       setState({ status: "busy" })
       await subscribe(subscribeOptions)
@@ -61,8 +60,22 @@ export default function Subscriber() {
   }
 
   if (!subscribeOptions.token) {
-    return <div>Missing access_token</div>
+    return (
+      <button
+        className="block mx-auto my-2 bg-gray-500 text-white font-bold py-2 px-4 rounded"
+        disabled
+      >
+        Missing access_token
+      </button>
+    )
   }
 
-  return <button onClick={handleSubscribe}>Subscribe</button>
+  return (
+    <button
+      onClick={handleSubscribe}
+      className="block mx-auto my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Subscribe
+    </button>
+  )
 }
