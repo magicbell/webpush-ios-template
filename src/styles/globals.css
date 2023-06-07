@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+html, body, #__next {
+  height: 100%;
+}
