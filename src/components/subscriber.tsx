@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { useConfig } from "@magicbell/react-headless"
-import {
-  prefetchConfig,
-  registerServiceWorker,
-  subscribe,
-} from "@magicbell/webpush"
+import { useConfig, clientSettings } from "@magicbell/react-headless"
+import { prefetchConfig, registerServiceWorker, subscribe } from "@magicbell/webpush"
+
+import { DeviceInfo } from "@/hooks/useDeviceInfo"
+import subscriptionManager from "@/services/subscriptionManager"
 
 const getUrlParams = (url) => {
   const params = {}
@@ -26,7 +25,7 @@ type State =
   | { status: "error"; error: string }
   | { status: "unsupported" }
 
-export default function Subscriber() {
+export default function Subscriber({ info }: { info: DeviceInfo }) {
   const [state, setState] = useState<State>({ status: "idle" })
   const config = useConfig()
   const url = config.channels?.webPush.config.subscribeUrl
@@ -49,23 +48,42 @@ export default function Subscriber() {
   }, [subscribeOptions])
 
   const handleSubscribe = async () => {
-    await Notification.requestPermission()
     try {
       setState({ status: "busy" })
       await subscribe(subscribeOptions)
+      await subscriptionManager.saveToLocalStorage(
+        clientSettings.getState().userExternalId as string
+      )
       setState({ status: "success" })
     } catch (error: any) {
       setState({ status: "error", error: error.message })
     }
   }
 
-  if (!subscribeOptions.token) {
+  const isLoading = !subscribeOptions.token || state.status === "busy"
+  const isGranted =
+    typeof Notification !== "undefined" &&
+    Notification.permission === "granted" &&
+    state.status === "success"
+
+  if (isLoading) {
     return (
       <button
         className="block mx-auto my-2 bg-gray-500 text-white font-bold py-2 px-4 rounded"
         disabled
       >
-        Missing access_token
+        Loading
+      </button>
+    )
+  }
+
+  if (isGranted) {
+    return (
+      <button
+        className="block mx-auto my-2 bg-green-500 text-white font-bold py-2 px-4 rounded"
+        disabled
+      >
+        Subscribed
       </button>
     )
   }
