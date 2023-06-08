@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useConfig, clientSettings } from "@magicbell/react-headless"
-import { prefetchConfig, registerServiceWorker, subscribe } from "@magicbell/webpush"
+import {
+  prefetchConfig,
+  registerServiceWorker,
+  subscribe,
+} from "@magicbell/webpush"
 
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
@@ -50,9 +54,9 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
   const handleSubscribe = async () => {
     try {
       setState({ status: "busy" })
-      await subscribe(subscribeOptions)
-      await subscriptionManager.saveToLocalStorage(
-        clientSettings.getState().userExternalId as string
+      await subscriptionManager.subscribe(
+        clientSettings.getState().userExternalId as string,
+        subscribeOptions
       )
       setState({ status: "success" })
     } catch (error: any) {

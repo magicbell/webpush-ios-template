@@ -35,7 +35,7 @@ export default function useDeviceInfo() {
       subscriptionState: "pending",
     }
 
-    subscriptionManager.getFromLocalStorage(
+    subscriptionManager.getActiveSubscriptionFromLocalStorage(
       clientSettings.getState().userExternalId as string,
       (activeSubscription, context) => {
         setInfo((info) =>
