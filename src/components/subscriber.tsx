@@ -55,7 +55,7 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
     try {
       setState({ status: "busy" })
       await subscriptionManager.subscribe(
-        clientSettings.getState().userExternalId as string,
+        clientSettings.getState().userEmail as string,
         subscribeOptions
       )
       setState({ status: "success" })

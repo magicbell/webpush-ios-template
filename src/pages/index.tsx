@@ -10,7 +10,7 @@ export default function MyComponent() {
   return (
     <MagicBellProvider
       apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY as string}
-      userExternalId={SubscriptionManager.getOrSetUserId()}
+      userEmail={`matt+${SubscriptionManager.getOrSetUserId()}@magicbell.io`}
     >
       <div className="flex justify-center h-full w-full">
         {!info ? (

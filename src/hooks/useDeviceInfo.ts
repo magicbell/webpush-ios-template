@@ -36,7 +36,7 @@ export default function useDeviceInfo() {
     }
 
     subscriptionManager.getActiveSubscriptionFromLocalStorage(
-      clientSettings.getState().userExternalId as string,
+      clientSettings.getState().userEmail as string,
       (activeSubscription, context) => {
         setInfo((info) =>
           info

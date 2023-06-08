@@ -24,7 +24,7 @@ export default async function handler(
   await magicbell.notifications.create({
     title: "Thanks for subscribing!",
     action_url: "https://magicbell.com",
-    recipients: [{ external_id: req.body.userId }],
+    recipients: [{ email: req.body.userId }],
   })
   res.status(200).json({ status: "success" })
 }
