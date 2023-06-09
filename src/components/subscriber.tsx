@@ -85,7 +85,13 @@ export default function Subscriber({
   }
 
   if (isSubscribed) {
-    return <Button text="Subscribed" classname="bg-green-500" disabled={true} />
+    return (
+      <Button
+        text="Notification on its way!"
+        classname="bg-green-500"
+        disabled={true}
+      />
+    )
   }
 
   return (
