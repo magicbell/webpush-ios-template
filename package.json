@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudflare/stream-react": "^1.8.0",
     "@magicbell/magicbell-react": "^10.7.3",
     "@magicbell/react-headless": "^4.2.7",
     "@magicbell/webpush": "^1.2.0",
@@ -25,7 +26,6 @@
     "react": "18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
-    "react-player": "^2.12.0",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.3"
   }

@@ -1,5 +1,5 @@
 import React from "react"
-import ReactPlayer from "react-player"
+import { Stream } from "@cloudflare/stream-react"
 
 const width = 260
 
@@ -11,12 +11,7 @@ export default function Instructional() {
         have this PWA &apos;installed&apos; with Safari (installation
         instructions below)
       </figcaption>
-      <ReactPlayer
-        controls={true}
-        className="inline-block"
-        url="/instructional.mp4"
-        width={width}
-      ></ReactPlayer>
+      <Stream controls src={"2817ad7f5925421901884ddd4b54d6df"} />
     </figure>
   )
 }
