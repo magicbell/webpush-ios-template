@@ -1,5 +1,5 @@
-import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
-import React, { useEffect, useState } from "react"
+import React from "react"
+import { DeviceInfo } from "@/hooks/useDeviceInfo"
 
 function giveFeedback(info: DeviceInfo) {}
 
@@ -13,7 +13,7 @@ export default function Info({ info }: { info: DeviceInfo }) {
             <li key={key} className="contents">
               <code className="text-right overflow-hidden text-ellipsis text-gray-400">
                 {key}
-              </code>{" "}
+              </code>
               <code>{String(value)}</code>
             </li>
           ))}

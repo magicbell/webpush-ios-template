@@ -1,8 +1,8 @@
 import { subscribe } from "@magicbell/webpush"
 
 /**
- * Since we send out notifications to a set of user id's, we need to make sure that each PushSubscription is tied to a user id.
- * This class ensures that this is the case.
+ * Since we send out notifications to a set of user ids, we need to make sure that each PushSubscription is tied to a user id
+ * This class ensures that the currently active PushSubscription is invalidated if the user id changes
  */
 export class SubscriptionManager {
   public serviceWorkerRegistration: ServiceWorkerRegistration | null = null
@@ -60,7 +60,6 @@ export class SubscriptionManager {
       },
       body: JSON.stringify({ userId }),
     })
-    console.log("response", response)
     if (!response.ok) {
       throw new Error("Failed to send welcome notification")
     }

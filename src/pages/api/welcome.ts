@@ -1,6 +1,5 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from "next"
 import MagicBell from "magicbell"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 interface WelcomeRequest extends NextApiRequest {
   body: {
@@ -13,8 +12,8 @@ type ResponseData = {
 }
 
 const magicbell = new MagicBell({
-  apiKey: process.env.NEXT_PUBLIC_MAGICBELL_API_KEY as string,
-  apiSecret: process.env.MAGICBELL_API_SECRET as string,
+  apiKey: process.env.NEXT_PUBLIC_MAGICBELL_API_KEY,
+  apiSecret: process.env.MAGICBELL_API_SECRET,
 })
 
 export default async function handler(
@@ -24,7 +23,7 @@ export default async function handler(
   await magicbell.notifications.create({
     title: "Thanks for subscribing!",
     action_url: "https://magicbell.com",
-    recipients: [{ email: req.body.userId }],
+    recipients: [{ external_id: req.body.userId }],
   })
   res.status(200).json({ status: "success" })
 }

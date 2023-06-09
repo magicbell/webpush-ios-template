@@ -1,28 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useConfig, clientSettings } from "@magicbell/react-headless"
-import {
-  prefetchConfig,
-  registerServiceWorker,
-  subscribe,
-} from "@magicbell/webpush"
+import { prefetchConfig, registerServiceWorker } from "@magicbell/webpush"
 
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
-
-const getUrlParams = (url) => {
-  const params = {}
-  const searchParams = /([^?=&]+)(=([^&]*))?/g
-  let match
-
-  while ((match = searchParams.exec(url)) !== null) {
-    const key = decodeURIComponent(match[1])
-    const value = decodeURIComponent(match[3] || "")
-
-    params[key] = value
-  }
-
-  return params
-}
 
 type State =
   | { status: "idle" | "busy" | "success" }
@@ -32,16 +13,20 @@ type State =
 export default function Subscriber({ info }: { info: DeviceInfo }) {
   const [state, setState] = useState<State>({ status: "idle" })
   const config = useConfig()
-  const url = config.channels?.webPush.config.subscribeUrl
 
   const subscribeOptions = useMemo(() => {
-    const searchParams = getUrlParams(url)
-    return {
-      token: (searchParams as any).access_token,
-      project: (searchParams as any).project,
-      host: "https://api.magicbell.com",
+    const host = "https://api.magicbell.com"
+    try {
+      const url = new URL(config.channels?.webPush.config.subscribeUrl || "")
+      return {
+        token: url.searchParams.get("access_token") || "",
+        project: url.searchParams.get("project") || "",
+        host,
+      }
+    } catch (e) {
+      return { token: "", project: "", host }
     }
-  }, [url])
+  }, [config])
 
   useEffect(() => {
     if (!subscribeOptions.token) {
@@ -55,7 +40,7 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
     try {
       setState({ status: "busy" })
       await subscriptionManager.subscribe(
-        clientSettings.getState().userEmail as string,
+        clientSettings.getState().userExternalId as string, // TODO: fix typing here
         subscribeOptions
       )
       setState({ status: "success" })
@@ -65,10 +50,8 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
   }
 
   const isLoading = !subscribeOptions.token || state.status === "busy"
-  const isGranted =
-    typeof Notification !== "undefined" &&
-    Notification.permission === "granted" &&
-    state.status === "success"
+  const isSubscribed =
+    state.status === "success" || info.subscriptionState === "subscribed"
 
   if (isLoading) {
     return (
@@ -81,7 +64,7 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
     )
   }
 
-  if (isGranted) {
+  if (isSubscribed) {
     return (
       <button
         className="block mx-auto my-2 bg-green-500 text-white font-bold py-2 px-4 rounded"

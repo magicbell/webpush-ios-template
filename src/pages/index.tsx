@@ -9,8 +9,8 @@ export default function MyComponent() {
   const info = useDeviceInfo()
   return (
     <MagicBellProvider
-      apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY as string}
-      userEmail={`matt+${SubscriptionManager.getOrSetUserId()}@magicbell.io`}
+      apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
+      userExternalId={SubscriptionManager.getOrSetUserId()}
     >
       <div className="flex justify-center h-full w-full">
         {!info ? (

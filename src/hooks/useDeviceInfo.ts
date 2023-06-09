@@ -19,9 +19,8 @@ export type DeviceInfo = {
 export default function useDeviceInfo() {
   const [info, setInfo] = useState<DeviceInfo | null>(null)
   useEffect(() => {
-    // put this in a useEffect to avoid SSR errors
     const info: DeviceInfo = {
-      standalone: window.matchMedia("(display-mode: standalone)").matches,
+      standalone: window.matchMedia("(display-mode: standalone)").matches, // true if PWA is installed
       browserName,
       osName,
       deviceType,
@@ -36,7 +35,7 @@ export default function useDeviceInfo() {
     }
 
     subscriptionManager.getActiveSubscriptionFromLocalStorage(
-      clientSettings.getState().userEmail as string,
+      clientSettings.getState().userExternalId as string, // TODO: fix typing here
       (activeSubscription, context) => {
         setInfo((info) =>
           info
