@@ -21,8 +21,6 @@ export default function MyComponent() {
   const [state, setState] = useState<State>({ status: "idle" })
   const info = useDeviceInfo()
 
-  console.log("state", state)
-
   function result(state: State) {
     if (!info) {
       return null
