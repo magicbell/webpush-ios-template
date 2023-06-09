@@ -1,4 +1,5 @@
 import React from "react"
+import ReactPlayer from "react-player"
 
 const width = 260
 
@@ -10,12 +11,12 @@ export default function Instructional() {
         have this PWA &apos;installed&apos; with Safari (installation
         instructions below)
       </figcaption>
-      <video
+      <ReactPlayer
+        controls={true}
         className="inline-block"
-        src="/instructional.mp4"
+        url="/instructional.mp4"
         width={width}
-        controls
-      ></video>
+      ></ReactPlayer>
     </figure>
   )
 }
