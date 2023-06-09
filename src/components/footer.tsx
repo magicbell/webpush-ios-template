@@ -5,7 +5,11 @@ export const magicBellHandle = "magicbell_io"
 export default function Footer() {
   return (
     <footer className="flex flex-col gap-3 py-6">
-      <div className="flex items-center justify-center gap-4">
+      <a
+        className="flex items-center justify-center gap-4"
+        href="https://www.magicbell.com/"
+        target="_blank"
+      >
         <span className="text-muted text-sm">powered by</span>
         <svg
           height="20"
@@ -41,7 +45,7 @@ export default function Footer() {
             </clipPath>
           </defs>
         </svg>
-      </div>
+      </a>
       <a
         className="flex items-center justify-center gap-2"
         href={`https://twitter.com/intent/user?screen_name=${magicBellHandle}`}
