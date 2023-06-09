@@ -52,17 +52,27 @@ export class SubscriptionManager {
   ) {
     await subscribe(options)
     await this.saveActiveSubscriptionIdToLocalStorage(userId)
-    // send post request to /welcome endpoint, with userId in body
-    const response = await fetch("/api/welcome", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId }),
+    await this.sendWelcomeNotification(userId)
+  }
+
+  public async sendWelcomeNotification(userId: string) {
+    this.getActiveSubscriptionFromLocalStorage(userId, async (subscription) => {
+      if (!subscription) {
+        console.error("No active subscription found")
+        return
+      }
+      // send post request to /welcome endpoint, with userId in body
+      const response = await fetch("/api/welcome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      })
+      if (!response.ok) {
+        throw new Error("Failed to send welcome notification")
+      }
     })
-    if (!response.ok) {
-      throw new Error("Failed to send welcome notification")
-    }
   }
 
   public async getActiveSubscriptionFromLocalStorage(
