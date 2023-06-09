@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudflare/stream-react": "^1.8.0",
     "@magicbell/magicbell-react": "^10.7.3",
     "@magicbell/react-headless": "^4.2.7",
     "@magicbell/webpush": "^1.2.0",
