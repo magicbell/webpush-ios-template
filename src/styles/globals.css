@@ -3,24 +3,17 @@
 @tailwind utilities;
 
 :root {
+  --background: #1B1D29;
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: rgb(var(--background-start-rgb));
+  background-color: var(--background);
 }
 
-html, body, #__next {
+/* html, body, #__next {
   height: 100%;
-}
+  overflow: visible;
+} */

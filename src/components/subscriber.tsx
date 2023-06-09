@@ -4,14 +4,37 @@ import { prefetchConfig, registerServiceWorker } from "@magicbell/webpush"
 
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
+import { State } from "@/pages"
 
-type State =
-  | { status: "idle" | "busy" | "success" }
-  | { status: "error"; error: string }
-  | { status: "unsupported" }
+function Button(props: {
+  text: string
+  classname: string
+  disabled: boolean
+  onClick?: () => void
+}) {
+  return (
+    <button
+      onClick={props.onClick}
+      className={
+        "block mx-auto my-4 py-2 px-4 rounded text-text text-sm h-10 font-semibold " +
+        props.classname
+      }
+      disabled={props.disabled}
+    >
+      {props.text}
+    </button>
+  )
+}
 
-export default function Subscriber({ info }: { info: DeviceInfo }) {
-  const [state, setState] = useState<State>({ status: "idle" })
+export default function Subscriber({
+  info,
+  state,
+  setState,
+}: {
+  info: DeviceInfo
+  state: State
+  setState: React.Dispatch<React.SetStateAction<State>>
+}) {
   const config = useConfig()
 
   const subscribeOptions = useMemo(() => {
@@ -54,33 +77,23 @@ export default function Subscriber({ info }: { info: DeviceInfo }) {
     state.status === "success" || info.subscriptionState === "subscribed"
 
   if (isLoading) {
-    return (
-      <button
-        className="block mx-auto my-2 bg-gray-500 text-white font-bold py-2 px-4 rounded"
-        disabled
-      >
-        Loading
-      </button>
-    )
+    return <Button text="Loading" classname="bg-gray-500" disabled={true} />
+  }
+
+  if (state.status === "error") {
+    return <Button text="Error" classname="bg-red-400" disabled={true} />
   }
 
   if (isSubscribed) {
-    return (
-      <button
-        className="block mx-auto my-2 bg-green-500 text-white font-bold py-2 px-4 rounded"
-        disabled
-      >
-        Subscribed
-      </button>
-    )
+    return <Button text="Subscribed" classname="bg-green-500" disabled={true} />
   }
 
   return (
-    <button
+    <Button
       onClick={handleSubscribe}
-      className="block mx-auto my-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Subscribe
-    </button>
+      text="Subscribe"
+      classname="bg-primary"
+      disabled={false}
+    />
   )
 }

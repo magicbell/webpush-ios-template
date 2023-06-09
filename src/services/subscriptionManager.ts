@@ -38,7 +38,7 @@ export class SubscriptionManager {
 
   private getActiveSubscription() {
     return this.serviceWorkerReady?.then((registration) =>
-      registration.pushManager.getSubscription()
+      registration.pushManager?.getSubscription()
     )
   }
 
