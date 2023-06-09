@@ -12,7 +12,7 @@ export default function ContentWrapper(props: { children: React.ReactNode }) {
         height={24}
       />
 
-      <h3 className="leading-8 text-lg font-bold">Web Push Test</h3>
+      <h3 className="leading-8 text-lg font-bold">WebPushTest.com</h3>
       <p className="font-normal text-sm">
         Click &apos;subscribe&apos; to enable Push Notifications
       </p>

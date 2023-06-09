@@ -6,6 +6,8 @@ import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
 import { State } from "@/pages"
 
+const resendDelay = 10 * 1000
+
 function Button(props: {
   text: string
   classname: string
@@ -35,6 +37,7 @@ export default function Subscriber({
   state: State
   setState: React.Dispatch<React.SetStateAction<State>>
 }) {
+  const [resendAvailable, setResendAvailable] = useState(false)
   const config = useConfig()
 
   const subscribeOptions = useMemo(() => {
@@ -72,9 +75,35 @@ export default function Subscriber({
     }
   }
 
+  const handleResend = async () => {
+    try {
+      setState({ status: "busy" })
+      await subscriptionManager.sendWelcomeNotification(
+        clientSettings.getState().userExternalId as string // TODO: fix typing here
+      )
+      setState({ status: "success" })
+    } catch (error: any) {
+      setState({ status: "error", error: error.message })
+    }
+    setResendAvailable(false)
+    setTimeout(() => {
+      setResendAvailable(true)
+    }, resendDelay)
+  }
+
   const isLoading = !subscribeOptions.token || state.status === "busy"
   const isSubscribed =
     state.status === "success" || info.subscriptionState === "subscribed"
+
+  useEffect(() => {
+    if (state.status === "success") {
+      setTimeout(() => {
+        setResendAvailable(true)
+      }, resendDelay)
+    } else if (info.subscriptionState === "subscribed") {
+      setResendAvailable(true)
+    }
+  }, [state.status, info.subscriptionState])
 
   if (isLoading) {
     return <Button text="Loading" classname="bg-gray-500" disabled={true} />
@@ -85,6 +114,16 @@ export default function Subscriber({
   }
 
   if (isSubscribed) {
+    if (resendAvailable) {
+      return (
+        <Button
+          onClick={handleResend}
+          text="Resend"
+          classname="bg-primary"
+          disabled={false}
+        />
+      )
+    }
     return (
       <Button
         text="Notification on its way!"
