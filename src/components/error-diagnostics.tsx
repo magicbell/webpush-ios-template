@@ -1,6 +1,9 @@
-import { DeviceInfo } from "@/hooks/useDeviceInfo"
-import React from "react"
+import React, { useEffect } from "react"
+import va from "@vercel/analytics"
+
 import Instructional from "./instructional"
+import { DeviceInfo } from "@/hooks/useDeviceInfo"
+import { clientSettings } from "@magicbell/react-headless"
 
 /**
  * Here we show the user some diagnostics to help them troubleshoot
@@ -10,6 +13,13 @@ export default function ErrorDiagnostics(props: {
   info: DeviceInfo
   error: string
 }) {
+  useEffect(() => {
+    va.track("error", {
+      ...props.info,
+      error: props.error,
+      id: clientSettings.getState().userExternalId as string, // TODO: fix typing here
+    })
+  }, [props.info, props.error])
   function getContent() {
     switch (props.info.deviceType) {
       case "browser":
