@@ -35,7 +35,7 @@ export default function ErrorDiagnostics(props: { error: string }) {
             }
             return (
               <p>
-                {`It looks like you have denied notification permissions for this site in ${info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
+                {`It looks like you denied notification permissions for WebPushTest.com in ${info.browserName}. To receive push notifications, please permit us to notify you.`}
               </p>
             )
           }
@@ -70,7 +70,7 @@ export default function ErrorDiagnostics(props: { error: string }) {
           case "denied":
             return (
               <p>
-                {`It looks like you have denied notification permissions for this site in ${info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
+                {`It looks like you denied notification permissions for WebPushTest.com in ${info.browserName}. To receive push notifications, please permit us to notify you.`}
               </p>
             )
         }
