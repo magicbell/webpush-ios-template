@@ -35,7 +35,7 @@ export default function MyComponent() {
     if (state.status === "error") {
       return (
         <>
-          <ErrorDiagnostics info={info} error={state.error}></ErrorDiagnostics>
+          <ErrorDiagnostics error={state.error}></ErrorDiagnostics>
           <Info info={info}></Info>
         </>
       )

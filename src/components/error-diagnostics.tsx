@@ -2,47 +2,48 @@ import React, { useEffect } from "react"
 import va from "@vercel/analytics"
 
 import Instructional from "./instructional"
-import { DeviceInfo } from "@/hooks/useDeviceInfo"
+import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
 import { clientSettings } from "@magicbell/react-headless"
 
 /**
  * Here we show the user some diagnostics to help them troubleshoot
  */
 
-export default function ErrorDiagnostics(props: {
-  info: DeviceInfo
-  error: string
-}) {
+export default function ErrorDiagnostics(props: { error: string }) {
+  const info = useDeviceInfo()
   useEffect(() => {
     va.track("error", {
-      ...props.info,
+      ...info,
       error: props.error,
       id: clientSettings.getState().userExternalId as string, // TODO: fix typing here
     })
-  }, [props.info, props.error])
+  }, [info, props.error])
   function getContent() {
-    switch (props.info.deviceType) {
+    if (!info) {
+      return null
+    }
+    switch (info.deviceType) {
       case "browser":
-        switch (props.info.notificationApiPermissionStatus) {
+        switch (info.notificationApiPermissionStatus) {
           case "denied": {
-            if (props.info.isPrivate) {
+            if (info.isPrivate) {
               return (
                 <p>
-                  {`It looks like you are browsing in private mode in ${props.info.browserName}. Unfortunately, this mode does not support notifications. Please try again in a non-private window.`}
+                  {`It looks like you are browsing in private mode in ${info.browserName}. Unfortunately, this mode does not support notifications. Please try again in a non-private window.`}
                 </p>
               )
             }
             return (
               <p>
-                {`It looks like you have denied notification permissions for this site in ${props.info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
+                {`It looks like you have denied notification permissions for this site in ${info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
               </p>
             )
           }
         }
       case "mobile": {
-        switch (props.info.osName) {
+        switch (info.osName) {
           case "iOS":
-            switch (props.info.standalone) {
+            switch (info.standalone) {
               case false:
                 return (
                   <div>
@@ -51,7 +52,7 @@ export default function ErrorDiagnostics(props: {
                   </div>
                 )
             }
-            const [osMajorVersion, osMinorVersion] = props.info.osVersion
+            const [osMajorVersion, osMinorVersion] = info.osVersion
               .toString()
               .split(".")
             if (
@@ -60,16 +61,16 @@ export default function ErrorDiagnostics(props: {
             ) {
               return (
                 <p>
-                  {`It looks like you are using iOS ${props.info.osVersion}. This demo requires iOS 16.5 or later.`}
+                  {`It looks like you are using iOS ${info.osVersion}. This demo requires iOS 16.5 or later.`}
                 </p>
               )
             }
         }
-        switch (props.info.notificationApiPermissionStatus) {
+        switch (info.notificationApiPermissionStatus) {
           case "denied":
             return (
               <p>
-                {`It looks like you have denied notification permissions for this site in ${props.info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
+                {`It looks like you have denied notification permissions for this site in ${info.browserName}. If you wish to see notifications come through, notification permissions need to be granted.`}
               </p>
             )
         }
