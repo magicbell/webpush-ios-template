@@ -1,7 +1,10 @@
 import Image from "next/image"
 import React from "react"
 
-export default function ContentWrapper(props: { children: React.ReactNode }) {
+export default function ContentWrapper(props: {
+  children: React.ReactNode
+  message: string
+}) {
   return (
     <section className="text-center text-text ">
       <Image
@@ -13,9 +16,7 @@ export default function ContentWrapper(props: { children: React.ReactNode }) {
       />
 
       <h3 className="leading-8 text-lg font-bold">WebPushTest.com</h3>
-      <p className="font-normal text-sm">
-        Click &apos;subscribe&apos; to enable Push Notifications
-      </p>
+      <p className="font-normal text-sm">{props.message}</p>
       {props.children}
     </section>
   )
