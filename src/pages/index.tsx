@@ -9,6 +9,7 @@ import { SubscriptionManager } from "@/services/subscriptionManager"
 import Instructional from "@/components/instructional"
 import ContentWrapper from "@/components/content-wrapper"
 import Footer, { magicBellHandle } from "@/components/footer"
+import ErrorDiagnostics from "@/components/error-diagnostics"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,11 +30,12 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      return <Instructional />
+      return <Instructional withCaption />
     }
     if (state.status === "error") {
       return (
         <>
+          <ErrorDiagnostics info={info} error={state.error}></ErrorDiagnostics>
           <Info info={info}></Info>
         </>
       )
@@ -78,7 +80,13 @@ export default function MyComponent() {
           <div>Fetching Info</div>
         ) : (
           <section className="h-full max-w-screen-md mx-auto">
-            <ContentWrapper>
+            <ContentWrapper
+              message={
+                state.status === "error"
+                  ? ""
+                  : "Click 'subscribe' to enable Push Notifications"
+              }
+            >
               <Subscriber info={info} state={state} setState={setState} />
             </ContentWrapper>
             {result(state)}
