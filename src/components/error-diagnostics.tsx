@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import va from "@vercel/analytics"
 
-import Instructional from "./instructional"
+import IosInstructional from "./instructional"
 import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
 import { clientSettings } from "@magicbell/react-headless"
+import minVersionCheck from "@/utils/minVersionCheck"
 
 /**
  * Here we show the user some diagnostics to help them troubleshoot
@@ -48,17 +49,11 @@ export default function ErrorDiagnostics(props: { error: string }) {
                 return (
                   <div>
                     {`It looks like you have not yet installed this app on your device. Please install it using the instructions below, and try again.`}
-                    <Instructional withCaption={false} />
+                    <IosInstructional withCaption={false} />
                   </div>
                 )
             }
-            const [osMajorVersion, osMinorVersion] = info.osVersion
-              .toString()
-              .split(".")
-            if (
-              Number(osMajorVersion) < 16 ||
-              (Number(osMajorVersion) === 16 && Number(osMinorVersion) < 5)
-            ) {
+            if (!minVersionCheck(info.osVersion.toString(), 16, 5)) {
               return (
                 <p>
                   {`It looks like you are using iOS ${info.osVersion}. This demo requires iOS 16.5 or later.`}

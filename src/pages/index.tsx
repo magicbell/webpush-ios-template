@@ -1,3 +1,4 @@
+import Head from "next/head"
 import { useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
@@ -6,10 +7,11 @@ import Info from "@/components/info"
 import Subscriber from "@/components/subscriber"
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
-import Instructional from "@/components/instructional"
+import IosInstructional from "@/components/instructional"
 import ContentWrapper from "@/components/content-wrapper"
 import Footer, { magicBellHandle } from "@/components/footer"
 import ErrorDiagnostics from "@/components/error-diagnostics"
+import minVersionCheck from "@/utils/minVersionCheck"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,7 +32,23 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      return <Instructional withCaption />
+      if (info.osName === "iOS") {
+        if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
+          return (
+            <IosInstructional
+              withCaption
+              captionText="Follow the steps below to install on iOS 16.5"
+            />
+          )
+        } else {
+          return (
+            <IosInstructional
+              withCaption
+              captionText="Upgrade your iOS to 16.5 and then follow the steps below to install"
+            />
+          )
+        }
+      }
     }
     if (state.status === "error") {
       return (
@@ -75,6 +93,24 @@ export default function MyComponent() {
       apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
       userExternalId={SubscriptionManager.getOrSetUserId()}
     >
+      <Head>
+        <title>Web Push Notifications Demo | Magic Bell</title>
+        <meta
+          name="description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          key="desc"
+        />
+        <meta property="og:title" content="Web Push Notifications Demo" />
+        <meta
+          property="og:description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+        />
+        <meta property="og:image" content="/sharing-image.png" />
+        <meta property="og:image:width" content="432" />
+        <meta property="og:image:width" content="226" />
+        <meta property="og:url" content="https://webpushtest.com" />
+        <meta property="og:type" content="Website" />
+      </Head>
       <div className={"h-full w-full text-text " + inter.className}>
         {!info ? (
           <div>Fetching Info</div>

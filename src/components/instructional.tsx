@@ -3,16 +3,28 @@ import { Stream } from "@cloudflare/stream-react"
 
 const width = 260
 
-export default function Instructional(props: { withCaption: boolean }) {
+type Props =
+  | {
+      withCaption: true
+      captionText?: string
+    }
+  | {
+      withCaption: false
+    }
+
+export default function IosInstructional(props: Props) {
   return (
     <figure className="text-center mx-auto" style={{ width }}>
-      {props.withCaption ? (
+      {
         <figcaption className="text-gray-400 text-xs w-full block my-2">
-          If running this demo on iOS, ensure you are using 16.5 or later, and
-          have this PWA &apos;installed&apos; with Safari (installation
-          instructions below)
+          {props.withCaption
+            ? props.captionText ||
+              `If running this demo on iOS, ensure you are using 16.5 or later, and
+          have this PWA "installed"; with Safari (installation
+          instructions below`
+            : null}
         </figcaption>
-      ) : null}
+      }
       <Stream controls src={"2817ad7f5925421901884ddd4b54d6df"} />
     </figure>
   )
