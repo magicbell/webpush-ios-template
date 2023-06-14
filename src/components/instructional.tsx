@@ -12,7 +12,7 @@ type Props =
       withCaption: false
     }
 
-export default function Instructional(props: Props) {
+export default function IosInstructional(props: Props) {
   return (
     <figure className="text-center mx-auto" style={{ width }}>
       {

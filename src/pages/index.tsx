@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
 
@@ -7,7 +7,7 @@ import Info from "@/components/info"
 import Subscriber from "@/components/subscriber"
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
-import Instructional from "@/components/instructional"
+import IosInstructional from "@/components/instructional"
 import ContentWrapper from "@/components/content-wrapper"
 import Footer, { magicBellHandle } from "@/components/footer"
 import ErrorDiagnostics from "@/components/error-diagnostics"
@@ -31,7 +31,7 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      return <Instructional withCaption captionText="" />
+      return <IosInstructional withCaption captionText="" />
     }
     if (state.status === "error") {
       return (
