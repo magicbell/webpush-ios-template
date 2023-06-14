@@ -5,7 +5,7 @@ export const magicBellHandle = "magicbell_io"
 
 export default function Disclaimer() {
   return (
-    <div className="flex flex-col gap-3 py-6">
+    <section className="flex flex-col gap-3 py-6">
       <a
         className="flex items-center justify-center gap-2 flex-col"
         href="https://www.magicbell.com/"
@@ -19,6 +19,6 @@ export default function Disclaimer() {
           alt="magic bell logo"
         ></Image>
       </a>
-    </div>
+    </section>
   )
 }

@@ -91,46 +91,58 @@ export default function MyComponent() {
   }
 
   return (
-    <MagicBellProvider
-      apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
-      userExternalId={SubscriptionManager.getOrSetUserId()}
-    >
-      <Head>
-        <title>Web Push Notifications Demo | Magic Bell</title>
-        <meta
-          name="description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-          key="desc"
-        />
-        <meta property="og:title" content="Web Push Notifications Demo" />
-        <meta
-          property="og:description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-        />
-        <meta property="og:image" content="/sharing-image.png" />
-        <meta property="og:image:width" content="432" />
-        <meta property="og:image:width" content="226" />
-        <meta property="og:url" content="https://webpushtest.com" />
-        <meta property="og:type" content="Website" />
-      </Head>
-      <div className={"h-full w-full text-text " + inter.className}>
-        {!info ? (
-          <div>Fetching Info</div>
-        ) : (
-          <section className="h-full max-w-screen-md mx-auto">
-            <ContentWrapper message={""}>
-              <Subscriber info={info} state={state} setState={setState} />
-            </ContentWrapper>
-            {result(state)}
-            <ul className="text-center mt-4">
-              <li>Fork the source code</li>
-              <li>Link to PWA twitter thread</li>
-            </ul>
-            <Disclaimer />
-          </section>
-        )}
-      </div>
-      <footer>{info && <Info info={info} />}</footer>
-    </MagicBellProvider>
+    <>
+      <header
+        className={
+          "leading-8 text-lg text-text font-bold py-4 bg-slate-600 text-center " +
+          inter.className
+        }
+      >
+        WebPushTest.com
+      </header>
+      <MagicBellProvider
+        apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
+        userExternalId={SubscriptionManager.getOrSetUserId()}
+      >
+        <Head>
+          <title>Web Push Notifications Demo | Magic Bell</title>
+          <meta
+            name="description"
+            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+            key="desc"
+          />
+          <meta property="og:title" content="Web Push Notifications Demo" />
+          <meta
+            property="og:description"
+            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          />
+          <meta property="og:image" content="/sharing-image.png" />
+          <meta property="og:image:width" content="432" />
+          <meta property="og:image:width" content="226" />
+          <meta property="og:url" content="https://webpushtest.com" />
+          <meta property="og:type" content="Website" />
+        </Head>
+        <main className={"h-full w-full text-text " + inter.className}>
+          {!info ? (
+            <div>Fetching Info</div>
+          ) : (
+            <div className="h-full max-w-screen-md mx-auto">
+              <ContentWrapper message={""}>
+                <Subscriber info={info} state={state} setState={setState} />
+              </ContentWrapper>
+              {result(state)}
+              <section>
+                <ul className="text-center mt-4">
+                  <li>Fork the source code</li>
+                  <li>Link to PWA twitter thread</li>
+                </ul>
+              </section>
+              <Disclaimer />
+            </div>
+          )}
+        </main>
+        <footer>{info && <Info info={info} />}</footer>
+      </MagicBellProvider>
+    </>
   )
 }
