@@ -31,7 +31,7 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      return <Instructional withCaption />
+      return <Instructional withCaption captionText="" />
     }
     if (state.status === "error") {
       return (
@@ -89,8 +89,8 @@ export default function MyComponent() {
           content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
         />
         <meta property="og:image" content="/sharing-image.png" />
-        <meta property="og:image:width" content="750" />
-        <meta property="og:image:width" content="910" />
+        <meta property="og:image:width" content="432" />
+        <meta property="og:image:width" content="226" />
         <meta property="og:url" content="https://webpushtest.com" />
         <meta property="og:type" content="Website" />
       </Head>
