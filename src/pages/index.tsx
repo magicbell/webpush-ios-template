@@ -9,11 +9,13 @@ import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
 import IosInstructional from "@/components/instructional"
 import ContentWrapper from "@/components/content-wrapper"
-import Footer, { magicBellHandle } from "@/components/footer"
 import ErrorDiagnostics from "@/components/error-diagnostics"
 import minVersionCheck from "@/utils/minVersionCheck"
+import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
 
 const inter = Inter({ subsets: ["latin"] })
+
+// TODO: make the various sections have different background color shades
 
 export type State =
   | { status: "idle" | "busy" | "success" }
@@ -116,20 +118,19 @@ export default function MyComponent() {
           <div>Fetching Info</div>
         ) : (
           <section className="h-full max-w-screen-md mx-auto">
-            <ContentWrapper
-              message={
-                state.status === "error"
-                  ? ""
-                  : "Click 'subscribe' to enable Push Notifications"
-              }
-            >
+            <ContentWrapper message={""}>
               <Subscriber info={info} state={state} setState={setState} />
             </ContentWrapper>
             {result(state)}
+            <ul className="text-center mt-4">
+              <li>Fork the source code</li>
+              <li>Link to PWA twitter thread</li>
+            </ul>
+            <Disclaimer />
           </section>
         )}
       </div>
-      <Footer />
+      <footer>{info && <Info info={info} />}</footer>
     </MagicBellProvider>
   )
 }

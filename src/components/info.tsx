@@ -3,6 +3,9 @@ import { DeviceInfo } from "@/hooks/useDeviceInfo"
 
 function giveFeedback(info: DeviceInfo) {}
 
+// TODO: make me copiable
+// TODO: make me collapsible
+
 // This component shows PWA-push related information to the user
 export default function Info({ info }: { info: DeviceInfo }) {
   return (

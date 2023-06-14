@@ -18,7 +18,7 @@ function Button(props: {
     <button
       onClick={props.onClick}
       className={
-        "block mx-auto my-4 py-2 px-4 rounded text-text text-sm h-10 font-semibold " +
+        "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border " +
         props.classname
       }
       disabled={props.disabled}
@@ -134,11 +134,17 @@ export default function Subscriber({
   }
 
   return (
-    <Button
-      onClick={handleSubscribe}
-      text="Subscribe"
-      classname="bg-primary"
-      disabled={false}
-    />
+    <>
+      <Button
+        onClick={handleSubscribe}
+        text="Subscribe"
+        classname="bg-primary"
+        disabled={false}
+      />
+      <p className="text-xs my-6">
+        * Once we subscribe we will send you one automatic test-notification.
+        You can unsubscribe at any time.
+      </p>
+    </>
   )
 }
