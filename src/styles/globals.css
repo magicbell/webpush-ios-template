@@ -13,7 +13,13 @@ body {
   background-color: var(--background);
 }
 
-/* html, body, #__next {
+#__next {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+html, body, #__next {
   height: 100%;
   overflow: visible;
-} */
+}

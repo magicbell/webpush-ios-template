@@ -122,7 +122,9 @@ export default function MyComponent() {
           <meta property="og:url" content="https://webpushtest.com" />
           <meta property="og:type" content="Website" />
         </Head>
-        <main className={"h-full w-full text-text " + inter.className}>
+        <main
+          className={"h-full w-full text-text flex-grow " + inter.className}
+        >
           {!info ? (
             <div>Fetching Info</div>
           ) : (
@@ -141,7 +143,9 @@ export default function MyComponent() {
             </div>
           )}
         </main>
-        <footer>{info && <Info info={info} />}</footer>
+        <footer className="flex-shrink-0">
+          {info && <Info info={info} />}
+        </footer>
       </MagicBellProvider>
     </>
   )
