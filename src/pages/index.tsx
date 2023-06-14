@@ -11,6 +11,7 @@ import IosInstructional from "@/components/instructional"
 import ContentWrapper from "@/components/content-wrapper"
 import Footer, { magicBellHandle } from "@/components/footer"
 import ErrorDiagnostics from "@/components/error-diagnostics"
+import minVersionCheck from "@/utils/minVersionCheck"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,7 +32,23 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      return <IosInstructional withCaption captionText="" />
+      if (info.osName === "iOS") {
+        if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
+          return (
+            <IosInstructional
+              withCaption
+              captionText="Follow the steps below to install on iOS 16.5"
+            />
+          )
+        } else {
+          return (
+            <IosInstructional
+              withCaption
+              captionText="Upgrade your iOS to 16.5 and then follow the steps below to install"
+            />
+          )
+        }
+      }
     }
     if (state.status === "error") {
       return (
