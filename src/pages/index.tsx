@@ -1,4 +1,5 @@
-import { useState } from "react"
+import Head from "next/head"
+import { useEffect, useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
 
@@ -75,6 +76,24 @@ export default function MyComponent() {
       apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
       userExternalId={SubscriptionManager.getOrSetUserId()}
     >
+      <Head>
+        <title>Web Push Notifications Demo | Magic Bell</title>
+        <meta
+          name="description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          key="desc"
+        />
+        <meta property="og:title" content="Web Push Notifications Demo" />
+        <meta
+          property="og:description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+        />
+        <meta property="og:image" content="/sharing-image.png" />
+        <meta property="og:image:width" content="750" />
+        <meta property="og:image:width" content="910" />
+        <meta property="og:url" content="https://webpushtest.com" />
+        <meta property="og:type" content="Website" />
+      </Head>
       <div className={"h-full w-full text-text " + inter.className}>
         {!info ? (
           <div>Fetching Info</div>
