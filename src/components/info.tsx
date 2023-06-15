@@ -19,8 +19,6 @@ export default function Info({ info }: { info: DeviceInfo }) {
     return () => clearTimeout(timerRef.current)
   }, [])
 
-  console.log("toast open", toastOpen)
-
   return (
     <Toast.Provider swipeDirection="right">
       <button
