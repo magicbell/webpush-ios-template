@@ -1,5 +1,5 @@
 import useDeviceInfo from "@/hooks/useDeviceInfo"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useState } from "react"
 import Info from "./info"
 import * as Collapsible from "@radix-ui/react-collapsible"
 import Image from "next/image"
@@ -8,18 +8,12 @@ export default function Footer() {
   const [open, setOpen] = useState(false)
   const info = useDeviceInfo()
 
-  useEffect(() => {
-    if (open) {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
-    }
-  }, [open])
-
   return (
-    <footer className="flex-shrink-0">
+    <footer className="flex-shrink-0 w-full fixed bottom-0">
       <Collapsible.Root className="h-full" open={open} onOpenChange={setOpen}>
         <Collapsible.Trigger asChild>
           <div
-            className="bg-gray-800 h-10 flex justify-center px-2 cursor-pointer"
+            className="bg-gray-800 h-10 flex justify-center px-2 cursor-pointer icon-hoverable"
             title="Toggle device details"
           >
             {open ? (
@@ -28,6 +22,7 @@ export default function Footer() {
                 width={20}
                 height={20}
                 alt="arrow-down"
+                className="icon-hover-down"
               />
             ) : (
               <Image
@@ -35,6 +30,7 @@ export default function Footer() {
                 width={20}
                 height={20}
                 alt="arrow-up"
+                className="icon-hover-up"
               />
             )}
           </div>

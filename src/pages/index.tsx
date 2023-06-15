@@ -2,12 +2,13 @@ import Head from "next/head"
 import { useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
+import Image from "next/image"
 
 import Info from "@/components/info"
 import Subscriber from "@/components/subscriber"
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
-import IosInstructional from "@/components/instructional"
+import IosInstructionalStatic from "@/components/ios-instructional-static"
 import ContentWrapper from "@/components/content-wrapper"
 import ErrorDiagnostics from "@/components/error-diagnostics"
 import minVersionCheck from "@/utils/minVersionCheck"
@@ -35,23 +36,14 @@ export default function MyComponent() {
       (state.status === "idle" || state.status === "busy") &&
       !info.standalone
     ) {
-      if (info.osName === "iOS") {
-        if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
-          return (
-            <IosInstructional
-              withCaption
-              captionText="Follow the steps below to install on iOS 16.5"
-            />
-          )
-        } else {
-          return (
-            <IosInstructional
-              withCaption
-              captionText="Upgrade your iOS to 16.5 and then follow the steps below to install"
-            />
-          )
-        }
-      }
+      return <IosInstructionalStatic />
+      //   if (info.osName === "iOS") {
+      //     if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
+      //       return <IosInstructionalStatic />
+      //     } else {
+      //       return <IosInstructionalStatic />
+      //     }
+      //   }
     }
     if (state.status === "error") {
       return (
@@ -95,7 +87,7 @@ export default function MyComponent() {
     <>
       <header
         className={
-          "leading-8 text-lg text-text font-bold py-4 bg-slate-600 text-center " +
+          "leading-8 text-lg font-light text-text py-4 bg-gray-800 text-center " +
           inter.className
         }
       >
@@ -123,9 +115,7 @@ export default function MyComponent() {
           <meta property="og:url" content="https://webpushtest.com" />
           <meta property="og:type" content="Website" />
         </Head>
-        <main
-          className={"h-full w-full text-text flex-grow " + inter.className}
-        >
+        <main className={"w-full text-text pb-10 " + inter.className}>
           {!info ? (
             <div>Fetching Info</div>
           ) : (

@@ -54,7 +54,9 @@ export default function Info({ info }: { info: DeviceInfo }) {
         onOpenChange={setToastOpen}
         className="ToastRoot"
       >
-        <Toast.Title className="ToastTitle">Copied to clipboard</Toast.Title>
+        <Toast.Title className="ToastTitle">
+          Device details copied to clipboard
+        </Toast.Title>
         <Toast.Description asChild></Toast.Description>
       </Toast.Root>
       <Toast.Viewport className="ToastViewport" />

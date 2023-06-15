@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import va from "@vercel/analytics"
 
-import IosInstructional from "./instructional"
+import IosInstructionalVideo from "./ios-instructional-video"
 import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
 import { clientSettings } from "@magicbell/react-headless"
 import minVersionCheck from "@/utils/minVersionCheck"
@@ -49,7 +49,7 @@ export default function ErrorDiagnostics(props: { error: string }) {
                 return (
                   <div>
                     {`It looks like you have not yet installed this app on your device. Please install it using the instructions below, and try again.`}
-                    <IosInstructional withCaption={false} />
+                    <IosInstructionalVideo withCaption={false} />
                   </div>
                 )
             }

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useConfig, clientSettings } from "@magicbell/react-headless"
 import { prefetchConfig, registerServiceWorker } from "@magicbell/webpush"
+import Image from "next/image"
 
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
@@ -15,16 +16,25 @@ function Button(props: {
   onClick?: () => void
 }) {
   return (
-    <button
-      onClick={props.onClick}
-      className={
-        "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border " +
-        props.classname
-      }
-      disabled={props.disabled}
-    >
-      {props.text}
-    </button>
+    <>
+      <Image
+        src="/rocket.svg"
+        className="inline-block my-6"
+        alt="rocket"
+        width={36}
+        height={36}
+      />
+      <button
+        onClick={props.onClick}
+        className={
+          "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border " +
+          props.classname
+        }
+        disabled={props.disabled}
+      >
+        {props.text}
+      </button>
+    </>
   )
 }
 

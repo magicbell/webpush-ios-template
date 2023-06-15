@@ -14,7 +14,7 @@ type Props =
 
 // TODO: switch this to a set of static images
 
-export default function IosInstructional(props: Props) {
+export default function IosInstructionalVideo(props: Props) {
   return (
     <figure className="text-center mx-auto" style={{ width }}>
       {
