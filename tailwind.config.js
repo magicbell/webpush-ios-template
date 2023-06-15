@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -18,6 +20,7 @@ module.exports = {
         muted: "#A09FA6",
         warning: "#F1A10D",
         hover: "#BCAFFD",
+        section: colors.zinc[900],
       },
     },
   },

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useConfig, clientSettings } from "@magicbell/react-headless"
 import { prefetchConfig, registerServiceWorker } from "@magicbell/webpush"
+import Image from "next/image"
 
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
@@ -13,18 +14,38 @@ function Button(props: {
   classname: string
   disabled: boolean
   onClick?: () => void
+  loading?: true
 }) {
+  const [hovered, setHovered] = useState(false)
   return (
-    <button
-      onClick={props.onClick}
-      className={
-        "block mx-auto my-4 py-2 px-4 rounded text-text text-sm h-10 font-semibold " +
-        props.classname
-      }
-      disabled={props.disabled}
-    >
-      {props.text}
-    </button>
+    <>
+      <Image
+        src="/rocket.svg"
+        className={
+          "inline-block my-6 rocket " +
+          (hovered && !props.disabled && !props.loading ? "launch" : "") +
+          (props.loading ? "weave" : "")
+        }
+        alt="rocket"
+        width={36}
+        height={36}
+      />
+      <button
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => {
+          props.onClick?.()
+          setHovered(false)
+        }}
+        className={
+          "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border hover-button " +
+          props.classname
+        }
+        disabled={props.disabled}
+      >
+        {props.text}
+      </button>
+    </>
   )
 }
 
@@ -129,16 +150,23 @@ export default function Subscriber({
         text="Notification on its way!"
         classname="bg-green-500"
         disabled={true}
+        loading
       />
     )
   }
 
   return (
-    <Button
-      onClick={handleSubscribe}
-      text="Subscribe"
-      classname="bg-primary"
-      disabled={false}
-    />
+    <>
+      <Button
+        onClick={handleSubscribe}
+        text="Subscribe"
+        classname="bg-primary"
+        disabled={false}
+      />
+      <p className="text-xs my-6">
+        * Once you subscribe we will send you one automatic test-notification.
+        You can unsubscribe at any time.
+      </p>
+    </>
   )
 }

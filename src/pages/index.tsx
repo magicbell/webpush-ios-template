@@ -1,19 +1,22 @@
 import Head from "next/head"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
 
-import Info from "@/components/info"
 import Subscriber from "@/components/subscriber"
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
-import IosInstructional from "@/components/instructional"
+import IosInstructionalStatic from "@/components/ios-instructional-static"
 import ContentWrapper from "@/components/content-wrapper"
-import Footer, { magicBellHandle } from "@/components/footer"
 import ErrorDiagnostics from "@/components/error-diagnostics"
 import minVersionCheck from "@/utils/minVersionCheck"
+import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
+import Footer from "@/components/footer"
+import Links from "@/components/links"
 
 const inter = Inter({ subsets: ["latin"] })
+
+// TODO: make the various sections have different background color shades
 
 export type State =
   | { status: "idle" | "busy" | "success" }
@@ -21,40 +24,52 @@ export type State =
   | { status: "unsupported" }
 
 export default function MyComponent() {
+  const [footerOpen, setFooterOpen] = useState(false)
   const [state, setState] = useState<State>({ status: "idle" })
   const info = useDeviceInfo()
 
-  function result(state: State) {
+  function actions(state: State) {
     if (!info) {
       return null
     }
-    if (
-      (state.status === "idle" || state.status === "busy") &&
-      !info.standalone
-    ) {
-      if (info.osName === "iOS") {
-        if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
-          return (
-            <IosInstructional
-              withCaption
-              captionText="Follow the steps below to install on iOS 16.5"
-            />
-          )
-        } else {
-          return (
-            <IosInstructional
-              withCaption
-              captionText="Upgrade your iOS to 16.5 and then follow the steps below to install"
-            />
-          )
-        }
+    if (info.osName === "iOS") {
+      if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
+        if (!info.standalone) return <IosInstructionalStatic />
+      } else {
+        return (
+          <p className="text-center text-red-400 my-6">
+            This demo requires iOS 16.5 or later. Please run a software update
+            to continue.
+          </p>
+        )
       }
+    }
+    if (info.isPrivate) {
+      return (
+        <p className="text-center text-red-400 my-6">
+          This demo requires a non-private browser window, since the{" "}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Notification"
+            target="_blank"
+            className="underline"
+          >
+            Notification API
+          </a>{" "}
+          is set to &quot;denied&quot; by default.
+        </p>
+      )
+    }
+    return <Subscriber info={info} state={state} setState={setState} />
+  }
+
+  function result(state: State) {
+    if (state.status === "idle" || state.status === "busy") {
+      return
     }
     if (state.status === "error") {
       return (
         <>
           <ErrorDiagnostics error={state.error}></ErrorDiagnostics>
-          <Info info={info}></Info>
         </>
       )
     }
@@ -82,54 +97,63 @@ export default function MyComponent() {
               , with reference to your device settings displayed below.
             </p>
           </section>
-          <Info info={info}></Info>
         </>
       )
     }
   }
 
+  useEffect(() => {
+    if (state.status === "success" || state.status === "error") {
+      setFooterOpen(true)
+    }
+  }, [state.status])
+
   return (
-    <MagicBellProvider
-      apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
-      userExternalId={SubscriptionManager.getOrSetUserId()}
-    >
-      <Head>
-        <title>Web Push Notifications Demo | Magic Bell</title>
-        <meta
-          name="description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-          key="desc"
-        />
-        <meta property="og:title" content="Web Push Notifications Demo" />
-        <meta
-          property="og:description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-        />
-        <meta property="og:image" content="/sharing-image.png" />
-        <meta property="og:image:width" content="432" />
-        <meta property="og:image:width" content="226" />
-        <meta property="og:url" content="https://webpushtest.com" />
-        <meta property="og:type" content="Website" />
-      </Head>
-      <div className={"h-full w-full text-text " + inter.className}>
-        {!info ? (
-          <div>Fetching Info</div>
-        ) : (
-          <section className="h-full max-w-screen-md mx-auto">
-            <ContentWrapper
-              message={
-                state.status === "error"
-                  ? ""
-                  : "Click 'subscribe' to enable Push Notifications"
-              }
-            >
-              <Subscriber info={info} state={state} setState={setState} />
-            </ContentWrapper>
-            {result(state)}
-          </section>
-        )}
-      </div>
-      <Footer />
-    </MagicBellProvider>
+    <>
+      <header
+        className={
+          "border-primary border-opacity-50 border-b-2 leading-8 text-lg font-bold text-gray-200 py-4 bg-section text-center " +
+          inter.className
+        }
+      >
+        WebPushTest.com
+      </header>
+      <MagicBellProvider
+        apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
+        userExternalId={SubscriptionManager.getOrSetUserId()}
+      >
+        <Head>
+          <title>Web Push Notifications Demo | Magic Bell</title>
+          <meta
+            name="description"
+            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+            key="desc"
+          />
+          <meta property="og:title" content="Web Push Notifications Demo" />
+          <meta
+            property="og:description"
+            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          />
+          <meta property="og:image" content="/sharing-image.png" />
+          <meta property="og:image:width" content="432" />
+          <meta property="og:image:width" content="226" />
+          <meta property="og:url" content="https://webpushtest.com" />
+          <meta property="og:type" content="Website" />
+        </Head>
+        <main className={"w-full text-text pb-10 px-8 " + inter.className}>
+          {!info ? (
+            <div>Fetching Info</div>
+          ) : (
+            <div className="h-full max-w-screen-md mx-auto">
+              <ContentWrapper message={""}>{actions(state)}</ContentWrapper>
+              {result(state)}
+              <Links />
+              <Disclaimer />
+            </div>
+          )}
+        </main>
+        <Footer open={footerOpen} setOpen={setFooterOpen} />
+      </MagicBellProvider>
+    </>
   )
 }
