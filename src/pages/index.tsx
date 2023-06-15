@@ -12,6 +12,7 @@ import ContentWrapper from "@/components/content-wrapper"
 import ErrorDiagnostics from "@/components/error-diagnostics"
 import minVersionCheck from "@/utils/minVersionCheck"
 import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
+import Footer from "@/components/footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -143,9 +144,7 @@ export default function MyComponent() {
             </div>
           )}
         </main>
-        <footer className="flex-shrink-0">
-          {info && <Info info={info} />}
-        </footer>
+        <Footer />
       </MagicBellProvider>
     </>
   )

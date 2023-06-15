@@ -13,6 +13,8 @@
     "@magicbell/magicbell-react": "^10.7.3",
     "@magicbell/react-headless": "^4.2.7",
     "@magicbell/webpush": "^1.2.0",
+    "@radix-ui/react-collapsible": "^1.0.3",
+    "@radix-ui/react-toast": "^1.1.4",
     "@storybook/react": "^7.0.18",
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
