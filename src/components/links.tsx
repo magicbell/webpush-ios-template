@@ -3,7 +3,7 @@ import React from "react"
 export default function Links() {
   return (
     <section
-      className="text-center my-8 grid items-center justify-center gap-x-4 gap-y-8 bg-section p-4 rounded-lg"
+      className="text-center my-8 grid items-center justify-center gap-x-4 gap-y-8 bg-section p-4 rounded-lg border-primary border-opacity-50 border-2"
       style={{
         gridTemplateColumns: "fit-content(100px) fit-content(500px)",
       }}

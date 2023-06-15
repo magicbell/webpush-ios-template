@@ -20,7 +20,7 @@ module.exports = {
         muted: "#A09FA6",
         warning: "#F1A10D",
         hover: "#BCAFFD",
-        section: colors.slate[900],
+        section: colors.zinc[900],
       },
     },
   },

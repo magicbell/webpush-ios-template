@@ -11,7 +11,7 @@ export default function Footer(props: {
   const info = useDeviceInfo()
 
   return (
-    <footer className="flex-shrink-0 w-full fixed bottom-0">
+    <footer className="flex-shrink-0 w-full fixed bottom-0 border-primary border-opacity-50 border-t-2">
       <Collapsible.Root
         className="h-full"
         open={props.open}

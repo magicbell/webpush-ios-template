@@ -115,7 +115,7 @@ export default function MyComponent() {
     <>
       <header
         className={
-          "border-slate-800 border-b-2  leading-8 text-lg font-bold text-text py-4 bg-section text-center " +
+          "border-primary border-opacity-50 border-b-2 leading-8 text-lg font-bold text-gray-200 py-4 bg-section text-center " +
           inter.className
         }
       >
