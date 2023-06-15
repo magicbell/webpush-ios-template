@@ -1,10 +1,8 @@
 import Head from "next/head"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
-import Image from "next/image"
 
-import Info from "@/components/info"
 import Subscriber from "@/components/subscriber"
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import { SubscriptionManager } from "@/services/subscriptionManager"
@@ -14,6 +12,7 @@ import ErrorDiagnostics from "@/components/error-diagnostics"
 import minVersionCheck from "@/utils/minVersionCheck"
 import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
 import Footer from "@/components/footer"
+import Links from "@/components/links"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,31 +24,55 @@ export type State =
   | { status: "unsupported" }
 
 export default function MyComponent() {
+  const [footerOpen, setFooterOpen] = useState(false)
   const [state, setState] = useState<State>({ status: "idle" })
   const info = useDeviceInfo()
 
-  function result(state: State) {
+  function actions(state: State) {
     if (!info) {
       return null
     }
-    if (
-      (state.status === "idle" || state.status === "busy") &&
-      !info.standalone
-    ) {
-      return <IosInstructionalStatic />
-      //   if (info.osName === "iOS") {
-      //     if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
-      //       return <IosInstructionalStatic />
-      //     } else {
-      //       return <IosInstructionalStatic />
-      //     }
-      //   }
+    if (info.osName === "iOS") {
+      if (
+        minVersionCheck(info.osVersion.toString(), 16, 5) &&
+        !info.standalone
+      ) {
+        return <IosInstructionalStatic />
+      } else {
+        return (
+          <p className="text-center text-red-400 my-6">
+            This demo requires iOS 16.5 or later. Please run a software update
+            to continue.
+          </p>
+        )
+      }
+    }
+    if (info.isPrivate) {
+      return (
+        <p className="text-center text-red-400 my-6">
+          This demo requires a non-private browser window, since the{" "}
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/API/Notification"
+            target="_blank"
+            className="underline"
+          >
+            Notification API
+          </a>{" "}
+          is set to &quot;denied&quot; by default.
+        </p>
+      )
+    }
+    return <Subscriber info={info} state={state} setState={setState} />
+  }
+
+  function result(state: State) {
+    if (state.status === "idle" || state.status === "busy") {
+      return
     }
     if (state.status === "error") {
       return (
         <>
           <ErrorDiagnostics error={state.error}></ErrorDiagnostics>
-          <Info info={info}></Info>
         </>
       )
     }
@@ -77,17 +100,22 @@ export default function MyComponent() {
               , with reference to your device settings displayed below.
             </p>
           </section>
-          <Info info={info}></Info>
         </>
       )
     }
   }
 
+  useEffect(() => {
+    if (state.status === "success" || state.status === "error") {
+      setFooterOpen(true)
+    }
+  }, [state.status])
+
   return (
     <>
       <header
         className={
-          "leading-8 text-lg font-light text-text py-4 bg-gray-800 text-center " +
+          "border-slate-800 border-b-2  leading-8 text-lg font-bold text-text py-4 bg-section text-center " +
           inter.className
         }
       >
@@ -115,26 +143,19 @@ export default function MyComponent() {
           <meta property="og:url" content="https://webpushtest.com" />
           <meta property="og:type" content="Website" />
         </Head>
-        <main className={"w-full text-text pb-10 " + inter.className}>
+        <main className={"w-full text-text pb-10 px-8 " + inter.className}>
           {!info ? (
             <div>Fetching Info</div>
           ) : (
             <div className="h-full max-w-screen-md mx-auto">
-              <ContentWrapper message={""}>
-                <Subscriber info={info} state={state} setState={setState} />
-              </ContentWrapper>
+              <ContentWrapper message={""}>{actions(state)}</ContentWrapper>
               {result(state)}
-              <section>
-                <ul className="text-center mt-4">
-                  <li>Fork the source code</li>
-                  <li>Link to PWA twitter thread</li>
-                </ul>
-              </section>
+              <Links />
               <Disclaimer />
             </div>
           )}
         </main>
-        <Footer />
+        <Footer open={footerOpen} setOpen={setFooterOpen} />
       </MagicBellProvider>
     </>
   )

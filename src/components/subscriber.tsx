@@ -14,20 +14,31 @@ function Button(props: {
   classname: string
   disabled: boolean
   onClick?: () => void
+  loading?: true
 }) {
+  const [hovered, setHovered] = useState(false)
   return (
     <>
       <Image
         src="/rocket.svg"
-        className="inline-block my-6"
+        className={
+          "inline-block my-6 rocket " +
+          (hovered && !props.disabled && !props.loading ? "launch" : "") +
+          (props.loading ? "weave" : "")
+        }
         alt="rocket"
         width={36}
         height={36}
       />
       <button
-        onClick={props.onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => {
+          props.onClick?.()
+          setHovered(false)
+        }}
         className={
-          "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border " +
+          "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border hover-button " +
           props.classname
         }
         disabled={props.disabled}
@@ -139,6 +150,7 @@ export default function Subscriber({
         text="Notification on its way!"
         classname="bg-green-500"
         disabled={true}
+        loading
       />
     )
   }
@@ -152,7 +164,7 @@ export default function Subscriber({
         disabled={false}
       />
       <p className="text-xs my-6">
-        * Once we subscribe we will send you one automatic test-notification.
+        * Once you subscribe we will send you one automatic test-notification.
         You can unsubscribe at any time.
       </p>
     </>

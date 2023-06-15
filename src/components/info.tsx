@@ -2,13 +2,6 @@ import React, { useRef, useState } from "react"
 import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import * as Toast from "@radix-ui/react-toast"
 
-import Image from "next/image"
-
-function giveFeedback(info: DeviceInfo) {}
-
-// TODO: make me copiable
-// TODO: make me collapsible
-
 // This component shows PWA-push related information to the user
 export default function Info({ info }: { info: DeviceInfo }) {
   const infoRef = useRef<HTMLUListElement>(null)
@@ -35,7 +28,7 @@ export default function Info({ info }: { info: DeviceInfo }) {
         }}
       >
         <ul
-          className="grid grid-cols-2 gap-x-8 gap-y-2 bg-gray-800 text-gray-100 p-4 rounded-lg text-xs md:text-lg relative"
+          className="grid grid-cols-2 gap-x-8 gap-y-2 bg-section text-gray-100 p-4 rounded-lg text-xs md:text-lg relative"
           ref={infoRef}
         >
           {info &&

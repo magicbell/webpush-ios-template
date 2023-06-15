@@ -8,7 +8,7 @@ export default function ContentWrapper(props: {
   message: string
 }) {
   return (
-    <section className="px-8 text-center text-text">
+    <section className="text-center text-text">
       <p className="font-normal text-sm">{props.message}</p>
       {props.children}
     </section>

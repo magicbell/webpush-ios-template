@@ -12,8 +12,6 @@ type Props =
       withCaption: false
     }
 
-// TODO: switch this to a set of static images
-
 export default function IosInstructionalVideo(props: Props) {
   return (
     <figure className="text-center mx-auto" style={{ width }}>

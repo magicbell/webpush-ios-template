@@ -31,7 +31,7 @@ function Tile(props: {
 export default function IosInstructionalStatic() {
   return (
     <>
-      <h3 className="text-center h-10 leading-10 uppercase">
+      <h3 className="text-center h-8 leading-8 uppercase text-xs">
         Installation instructions
       </h3>
       <section className="w-full max-w-xs mx-auto">

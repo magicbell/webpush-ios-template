@@ -21,6 +21,32 @@ body,
 }
 
 @layer base {
+
+    .hover-button:not(:disabled) {
+        opacity: 0.7;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .hover-button:hover {
+        opacity: 1;
+    }
+
+    .rocket {
+        transition: all 0.2s ease-in-out;
+        opacity: 0.7;
+    }
+
+    .rocket.launch {
+        opacity: 1;
+        transform: translateY(-10px) translateX(5px) rotateZ(10deg);
+    }
+
+    .rocket.weave {
+        --translation: 15px;
+        opacity: 1;
+        animation: weave 2s ease-in-out infinite;
+    }
+
     .icon-hoverable {
         transition: all 0.2s ease-in-out;
     }
@@ -90,6 +116,24 @@ body,
 
     .ToastRoot[data-swipe='end'] {
         animation: swipeOut 100ms ease-out;
+    }
+
+    @keyframes weave {
+        0% {
+            transform: translateX(-15px) translateY(0px)  rotateZ(0deg);
+        }
+        25% {
+            transform: translateX(0px) translateY(-10px) rotateZ(-45deg);
+        }
+        50% {
+            transform: translateX(15px) translateY(0px) rotateZ(-90deg);
+        }
+        75% {
+            transform: translateX(0px) translateY(-10px) rotateZ(-45deg);
+        }
+        100% {
+            transform: translateX(-15px) translateY(0px) rotateZ(0deg);
+        }
     }
 
     @keyframes hide {
