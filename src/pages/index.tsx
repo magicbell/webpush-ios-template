@@ -33,11 +33,8 @@ export default function MyComponent() {
       return null
     }
     if (info.osName === "iOS") {
-      if (
-        minVersionCheck(info.osVersion.toString(), 16, 5) &&
-        !info.standalone
-      ) {
-        return <IosInstructionalStatic />
+      if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
+        if (!info.standalone) return <IosInstructionalStatic />
       } else {
         return (
           <p className="text-center text-red-400 my-6">
