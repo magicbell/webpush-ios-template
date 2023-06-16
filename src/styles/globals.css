@@ -52,18 +52,20 @@ body,
     }
     .icon-hoverable:hover {
     }
-    .icon-hoverable .icon-hover-down,
-    .icon-hoverable .icon-hover-up {
+    .icon-hoverable *{
         opacity: 0.7;
         transition: all 0.2s ease-in-out;
     }
-    .icon-hoverable:hover .icon-hover-down {
+
+    .icon-hoverable:hover * {
         opacity: 1;
+    }
+
+    .icon-hoverable:hover .icon-hover-down {
         transform: translateY(2px);
     }
 
     .icon-hoverable:hover .icon-hover-up {
-        opacity: 1;
         transform: translateY(-2px);
     }
 

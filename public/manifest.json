@@ -1,6 +1,6 @@
 {
-  "name": "Push Test",
-  "short_name": "PushTest",
+  "name": "Web Push Test",
+  "short_name": "WebPushTest",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#90cdf4",
