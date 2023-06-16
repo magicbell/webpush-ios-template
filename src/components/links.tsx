@@ -3,7 +3,7 @@ import React from "react"
 export default function Links() {
   return (
     <section
-      className="text-center my-8 grid items-center justify-center gap-x-4 gap-y-8 bg-section p-4 rounded-lg border-primary border-opacity-50 border-2"
+      className="text-center my-8 grid items-center justify-center gap-x-4 gap-y-8 bg-section p-4 rounded-lg border-primary border-opacity-50 border-2 max-w-sm mx-auto"
       style={{
         gridTemplateColumns: "fit-content(100px) fit-content(500px)",
       }}
@@ -47,7 +47,7 @@ export default function Links() {
             fill="currentColor"
           />
         </svg>
-        <span className="text-sm">Go to Twitter accouncement</span>
+        <span className="text-sm">A thread about web-push on iOS 16.5</span>
       </a>
     </section>
   )
