@@ -53,7 +53,7 @@ export default async function handler(
 ) {
   const docRef = query(ref(db, "v0/newstories"), limitToFirst(40))
 
-  get(docRef).then(async (snapshot) => {
+  await get(docRef).then(async (snapshot) => {
     if (snapshot.exists()) {
       const items = snapshot.val()
       const fullItems: Story[] = await Promise.all(
@@ -63,16 +63,11 @@ export default async function handler(
       )
       fullItems.sort((a, b) => b.score - a.score)
       const firstUnNotifiedItem = fullItems[0]
-      await magicbell.notifications.create({
+      return magicbell.notifications.create({
         title: `New: ${firstUnNotifiedItem.title}`,
         action_url: firstUnNotifiedItem.url,
         recipients: [
           { external_id: req.body.userId },
-          //   {
-          //     topic: {
-          //       subscribers: true, // This will go on the CRON job, not the welcome notification
-          //     },
-          //   },
         ],
         category: "default",
         topic: topics["HN Top New"].id,

@@ -44,7 +44,7 @@ export default async function handler(
 ) {
   const docRef = query(ref(db, "v0/topstories"), limitToFirst(5))
 
-  get(docRef).then(async (snapshot) => {
+  await get(docRef).then(async (snapshot) => {
     if (snapshot.exists()) {
       const items = snapshot.val()
       const fullItems: Story[] = await Promise.all(
@@ -54,17 +54,10 @@ export default async function handler(
       )
       // TODO: check for the first un-notified item
       const firstUnNotifiedItem = fullItems[0]
-      await magicbell.notifications.create({
+      return magicbell.notifications.create({
         title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
         action_url: firstUnNotifiedItem.url,
-        recipients: [
-          { external_id: req.body.userId },
-          //   {
-          //     topic: {
-          //       subscribers: true, // This will go on the CRON job, not the welcome notification
-          //     },
-          //   },
-        ],
+        recipients: [{ external_id: req.body.userId }],
         category: "default",
         topic: topics["HN Top Story"].id,
       })
