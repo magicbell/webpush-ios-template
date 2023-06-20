@@ -43,7 +43,7 @@ export default async function handler(
 ) {
   const docRef = query(ref(db, "v0/topstories"), limitToFirst(30))
 
-  get(docRef).then(async (snapshot) => {
+  await get(docRef).then(async (snapshot) => {
     if (snapshot.exists()) {
       const items = snapshot.val()
       const fullItems: Story[] = await Promise.all(
@@ -52,7 +52,7 @@ export default async function handler(
         )
       )
       const randomItem = fullItems[Math.floor(Math.random() * fullItems.length)]
-      await magicbell.notifications.create({
+      return magicbell.notifications.create({
         title: `(${randomItem.score}) ${randomItem.title}`,
         content: randomItem.url,
         action_url: randomItem.url,
