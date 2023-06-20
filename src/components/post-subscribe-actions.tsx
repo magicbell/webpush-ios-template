@@ -44,15 +44,21 @@ export default function PostSubscribeActions(props: IProps) {
           loading
         />
       )}
-      {/* <div className="">OR</div>
+      <div className="text-purple-300">OR</div>
       <TopicSubscriberWrapper
-        description="Now that you have webpush successfully enabled, subscribe to any of
-            the HackerNews feeds below and receive a relevant notification about
-            top posts every 6 hours. Unsubscribe at any time."
+        renderDescription={() => (
+          <span>
+            {" "}
+            Now that you have webpush successfully enabled, subscribe to any of
+            the <span className="text-text">HackerNews</span> feeds below and
+            receive a relevant notification about top posts every 6 hours.
+            Unsubscribe at any time.
+          </span>
+        )}
         topics={Object.values(topics)}
         interactive={props.interactive}
         onAfterInteract={props.onAfterInteract}
-      /> */}
+      />
     </>
   )
 }

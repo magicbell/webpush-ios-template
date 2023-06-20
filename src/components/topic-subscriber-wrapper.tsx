@@ -5,15 +5,15 @@ interface IProps {
   topics: Topic[]
   interactive: boolean
   onAfterInteract: () => void
-  description?: string
+  renderDescription?: () => React.ReactNode
 }
 
 export default function TopicSubscriberWrapper(props: IProps) {
   return (
     <div className="">
       <div className="flex gap-4 items-center my-3">
-        {props.description ? (
-          <p className="text-muted text-xs">{props.description}</p>
+        {props.renderDescription ? (
+          <p className="text-muted text-xs">{props.renderDescription()}</p>
         ) : null}
       </div>
       <div
