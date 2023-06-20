@@ -50,7 +50,6 @@ export default async function handler(
           get(ref(db, `v0/item/${item}`)).then((snapshot) => snapshot.val())
         )
       )
-      // TODO: check for the first un-notified item
       const firstUnNotifiedItem = fullItems[0]
       return magicbell.notifications.create({
         title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
