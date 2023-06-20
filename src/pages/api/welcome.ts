@@ -24,6 +24,7 @@ export default async function handler(
     title: "Thanks for subscribing!",
     action_url: "https://magicbell.com",
     recipients: [{ external_id: req.body.userId }],
+    category: "default",
   })
   res.status(200).json({ status: "success" })
 }
