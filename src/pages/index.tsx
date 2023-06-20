@@ -1,11 +1,9 @@
 import Head from "next/head"
 import { useEffect, useState } from "react"
-import { MagicBellProvider } from "@magicbell/react-headless"
 import { Inter } from "next/font/google"
 
 import Subscriber from "@/components/subscriber"
-import useDeviceInfo from "@/hooks/useDeviceInfo"
-import { SubscriptionManager } from "@/services/subscriptionManager"
+import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
 import IosInstructionalStatic from "@/components/ios-instructional-static"
 import ContentWrapper from "@/components/content-wrapper"
 import ErrorDiagnostics from "@/components/error-diagnostics"
@@ -13,25 +11,24 @@ import minVersionCheck from "@/utils/minVersionCheck"
 import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
 import Footer from "@/components/footer"
 import Links from "@/components/links"
+import PostSubscribeActions from "@/components/post-subscribe-actions"
 
 const inter = Inter({ subsets: ["latin"] })
 
-// TODO: make the various sections have different background color shades
+const resendDelay = 10 * 1000
 
 export type State =
   | { status: "idle" | "busy" | "success" }
   | { status: "error"; error: string }
   | { status: "unsupported" }
 
-export default function MyComponent() {
+export default function Home() {
   const [footerOpen, setFooterOpen] = useState(false)
+  const [canResendNotification, setCanResendNotification] = useState(false)
   const [state, setState] = useState<State>({ status: "idle" })
   const info = useDeviceInfo()
 
-  function actions(state: State) {
-    if (!info) {
-      return null
-    }
+  function anticipateSubscriptionFailure(info: DeviceInfo) {
     if (info.osName === "iOS") {
       if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
         if (!info.standalone) return <IosInstructionalStatic />
@@ -59,7 +56,35 @@ export default function MyComponent() {
         </p>
       )
     }
-    return <Subscriber info={info} state={state} setState={setState} />
+    return null
+  }
+
+  function actions(state: State) {
+    if (!info) {
+      return null
+    }
+    if (state.status === "success" || info.subscriptionState === "subscribed") {
+      return (
+        <PostSubscribeActions
+          interactive={canResendNotification}
+          onAfterInteract={() => {
+            setCanResendNotification(false)
+            setTimeout(() => {
+              setCanResendNotification(true)
+            }, resendDelay)
+          }}
+          onError={(error) => {
+            setState({ status: "error", error })
+          }}
+        />
+      )
+    }
+
+    if (anticipateSubscriptionFailure(info)) {
+      return anticipateSubscriptionFailure(info)
+    }
+
+    return <Subscriber state={state} setState={setState} />
   }
 
   function result(state: State) {
@@ -108,6 +133,16 @@ export default function MyComponent() {
     }
   }, [state.status])
 
+  useEffect(() => {
+    if (state.status === "success") {
+      setTimeout(() => {
+        setCanResendNotification(true)
+      }, resendDelay)
+    } else if (info?.subscriptionState === "subscribed") {
+      setCanResendNotification(true)
+    }
+  }, [state.status, info?.subscriptionState])
+
   return (
     <>
       <header
@@ -118,42 +153,38 @@ export default function MyComponent() {
       >
         WebPushTest.com
       </header>
-      <MagicBellProvider
-        apiKey={process.env.NEXT_PUBLIC_MAGICBELL_API_KEY}
-        userExternalId={SubscriptionManager.getOrSetUserId()}
-      >
-        <Head>
-          <title>Web Push Notifications Demo | Magic Bell</title>
-          <meta
-            name="description"
-            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-            key="desc"
-          />
-          <meta property="og:title" content="Web Push Notifications Demo" />
-          <meta
-            property="og:description"
-            content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
-          />
-          <meta property="og:image" content="/sharing-image.png" />
-          <meta property="og:image:width" content="432" />
-          <meta property="og:image:width" content="226" />
-          <meta property="og:url" content="https://webpushtest.com" />
-          <meta property="og:type" content="Website" />
-        </Head>
-        <main className={"w-full text-text pb-10 px-8 " + inter.className}>
-          {!info ? (
-            <div>Fetching Info</div>
-          ) : (
-            <div className="h-full max-w-screen-md mx-auto">
-              <ContentWrapper message={""}>{actions(state)}</ContentWrapper>
-              {result(state)}
-              <Links />
-              <Disclaimer />
-            </div>
-          )}
-        </main>
-        <Footer open={footerOpen} setOpen={setFooterOpen} />
-      </MagicBellProvider>
+
+      <Head>
+        <title>Web Push Notifications Demo | Magic Bell</title>
+        <meta
+          name="description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          key="desc"
+        />
+        <meta property="og:title" content="Web Push Notifications Demo" />
+        <meta
+          property="og:description"
+          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+        />
+        <meta property="og:image" content="/sharing-image.png" />
+        <meta property="og:image:width" content="432" />
+        <meta property="og:image:width" content="226" />
+        <meta property="og:url" content="https://webpushtest.com" />
+        <meta property="og:type" content="Website" />
+      </Head>
+      <main className={"w-full text-text pb-10 px-8 " + inter.className}>
+        {!info ? (
+          <div>Fetching Info</div>
+        ) : (
+          <div className="h-full max-w-screen-md mx-auto">
+            <ContentWrapper message={""}>{actions(state)}</ContentWrapper>
+            {result(state)}
+            <Links />
+            <Disclaimer />
+          </div>
+        )}
+      </main>
+      <Footer open={footerOpen} setOpen={setFooterOpen} />
     </>
   )
 }

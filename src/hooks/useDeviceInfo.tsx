@@ -1,9 +1,10 @@
 import SubscriptionManager from "@/services/subscriptionManager"
 import subscriptionManager from "@/services/subscriptionManager"
-import { useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { clientSettings } from "@magicbell/react-headless"
 import { browserName, deviceType, osName, osVersion } from "react-device-detect"
 import { detectIncognito } from "detectincognitojs"
+import magicBell from "@/services/magicBell"
 
 // contains all relevant info about the device, for troubleshooting Notifications
 export type DeviceInfo = {
@@ -16,12 +17,16 @@ export type DeviceInfo = {
   notificationApiPermissionStatus: string
   serviceWorkerStatus: string
   subscriptionState: "pending" | "subscribed" | "unsubscribed"
+  topics: string[]
 }
 
-export default function useDeviceInfo() {
+const DeviceInfoContext = createContext<DeviceInfo | null>(null)
+
+export function DeviceInfoProvider(props: { children: React.ReactNode }) {
   const [info, setInfo] = useState<DeviceInfo | null>(null)
   useEffect(() => {
-    const info: DeviceInfo = {
+    // initialize device info
+    setInfo({
       standalone: window.matchMedia("(display-mode: standalone)").matches, // true if PWA is installed
       browserName,
       osName,
@@ -35,13 +40,14 @@ export default function useDeviceInfo() {
           : "Notification API unsupported",
       serviceWorkerStatus: "fetching",
       subscriptionState: "pending",
-    }
+      topics: [],
+    })
 
-    subscriptionManager.getActiveSubscriptionFromLocalStorage(
+    return subscriptionManager.subscribeToActiveSubscriptionFromLocalStorage(
       clientSettings.getState().userExternalId as string, // TODO: fix typing here
       async (activeSubscription, context) => {
         const { isPrivate } = await detectIncognito()
-
+        const topics = await magicBell.getTopics()
         setInfo((info) =>
           info
             ? {
@@ -53,14 +59,21 @@ export default function useDeviceInfo() {
                 subscriptionState: Boolean(activeSubscription)
                   ? "subscribed"
                   : "unsubscribed",
+                topics,
               }
             : null
         )
       }
     )
-
-    setInfo(info)
   }, [])
 
-  return info
+  return (
+    <DeviceInfoContext.Provider value={info}>
+      {props.children}
+    </DeviceInfoContext.Provider>
+  )
+}
+
+export default function useDeviceInfo() {
+  return useContext(DeviceInfoContext)
 }

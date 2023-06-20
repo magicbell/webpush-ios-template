@@ -1,4 +1,7 @@
+import { v4 as uuid } from "uuid"
+
 import { subscribe } from "@magicbell/webpush"
+import magicBell from "./magicBell"
 
 /**
  * Since we send out notifications to a set of user ids, we need to make sure that each PushSubscription is tied to a user id
@@ -7,6 +10,7 @@ import { subscribe } from "@magicbell/webpush"
 export class SubscriptionManager {
   public serviceWorkerRegistration: ServiceWorkerRegistration | null = null
   private serviceWorkerReady: Promise<ServiceWorkerRegistration> | null = null
+  private listeners: { [listenerId: string]: () => void }
 
   public static getOrSetUserId() {
     if (typeof window === "undefined") {
@@ -22,6 +26,7 @@ export class SubscriptionManager {
   }
 
   constructor() {
+    this.listeners = {}
     if (typeof window === "undefined") {
       return
     }
@@ -61,17 +66,7 @@ export class SubscriptionManager {
         console.error("No active subscription found")
         return
       }
-      // send post request to /welcome endpoint, with userId in body
-      const response = await fetch("/api/welcome", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId }),
-      })
-      if (!response.ok) {
-        throw new Error("Failed to send welcome notification")
-      }
+      magicBell.sendNotification("welcome")
     })
   }
 
@@ -93,6 +88,35 @@ export class SubscriptionManager {
       return cb(null, this)
     }
     return cb(activeSubscription, this)
+  }
+
+  /**
+   * Subscribe to the currently active subscription for the current user. A 'meta-subscription', if you will!
+   * @ param userId
+   * @ param cb
+   * @ returns unsubscribe function
+   */
+  public subscribeToActiveSubscriptionFromLocalStorage(
+    userId: string,
+    cb: (
+      activeSubscription: PushSubscription | null,
+      SubscriptionManager: SubscriptionManager
+    ) => void
+  ) {
+    const listenerId = uuid()
+    const wrappedCallback = async () => {
+      await this.getActiveSubscriptionFromLocalStorage(userId, cb)
+    }
+    wrappedCallback()
+
+    this.listeners[listenerId] = wrappedCallback
+    return () => {
+      delete this.listeners[listenerId]
+    }
+  }
+
+  public triggerListeners() {
+    Object.values(this.listeners).forEach((listener) => listener())
   }
 
   private async saveActiveSubscriptionIdToLocalStorage(userId: string) {

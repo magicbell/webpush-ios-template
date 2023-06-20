@@ -1,64 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useConfig, clientSettings } from "@magicbell/react-headless"
 import { prefetchConfig, registerServiceWorker } from "@magicbell/webpush"
-import Image from "next/image"
 
-import { DeviceInfo } from "@/hooks/useDeviceInfo"
 import subscriptionManager from "@/services/subscriptionManager"
+import Button from "@/components/button"
 import { State } from "@/pages"
 
-const resendDelay = 10 * 1000
-
-function Button(props: {
-  text: string
-  classname: string
-  disabled: boolean
-  onClick?: () => void
-  loading?: true
-}) {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <>
-      <Image
-        src="/rocket.svg"
-        className={
-          "inline-block my-6 rocket " +
-          (hovered && !props.disabled && !props.loading ? "launch" : "") +
-          (props.loading ? "weave" : "")
-        }
-        alt="rocket"
-        width={36}
-        height={36}
-      />
-      <button
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onClick={() => {
-          props.onClick?.()
-          setHovered(false)
-        }}
-        className={
-          "w-full block mb-4 py-2 px-4 rounded text-text text-md h-10 font-semibold box-border hover-button " +
-          props.classname
-        }
-        disabled={props.disabled}
-      >
-        {props.text}
-      </button>
-    </>
-  )
-}
-
 export default function Subscriber({
-  info,
   state,
   setState,
 }: {
-  info: DeviceInfo
   state: State
   setState: React.Dispatch<React.SetStateAction<State>>
 }) {
-  const [resendAvailable, setResendAvailable] = useState(false)
   const config = useConfig()
 
   const subscribeOptions = useMemo(() => {
@@ -96,35 +50,7 @@ export default function Subscriber({
     }
   }
 
-  const handleResend = async () => {
-    try {
-      setState({ status: "busy" })
-      await subscriptionManager.sendWelcomeNotification(
-        clientSettings.getState().userExternalId as string // TODO: fix typing here
-      )
-      setState({ status: "success" })
-    } catch (error: any) {
-      setState({ status: "error", error: error.message })
-    }
-    setResendAvailable(false)
-    setTimeout(() => {
-      setResendAvailable(true)
-    }, resendDelay)
-  }
-
   const isLoading = !subscribeOptions.token || state.status === "busy"
-  const isSubscribed =
-    state.status === "success" || info.subscriptionState === "subscribed"
-
-  useEffect(() => {
-    if (state.status === "success") {
-      setTimeout(() => {
-        setResendAvailable(true)
-      }, resendDelay)
-    } else if (info.subscriptionState === "subscribed") {
-      setResendAvailable(true)
-    }
-  }, [state.status, info.subscriptionState])
 
   if (isLoading) {
     return <Button text="Loading" classname="bg-gray-500" disabled={true} />
@@ -132,27 +58,6 @@ export default function Subscriber({
 
   if (state.status === "error") {
     return <Button text="Error" classname="bg-red-400" disabled={true} />
-  }
-
-  if (isSubscribed) {
-    if (resendAvailable) {
-      return (
-        <Button
-          onClick={handleResend}
-          text="Resend"
-          classname="bg-primary"
-          disabled={false}
-        />
-      )
-    }
-    return (
-      <Button
-        text="Notification on its way!"
-        classname="bg-green-500"
-        disabled={true}
-        loading
-      />
-    )
   }
 
   return (
