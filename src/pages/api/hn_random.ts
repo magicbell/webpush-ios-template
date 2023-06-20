@@ -2,7 +2,6 @@ import MagicBell from "magicbell"
 import { initializeApp } from "firebase/app"
 import { getDatabase, ref, get, limitToFirst, query } from "firebase/database"
 import type { NextApiRequest, NextApiResponse } from "next"
-import { topics } from "@/constants/topics"
 
 interface WelcomeRequest extends NextApiRequest {
   body: {
@@ -57,14 +56,7 @@ export default async function handler(
         title: `(${randomItem.score}) ${randomItem.title}`,
         content: randomItem.url,
         action_url: randomItem.url,
-        recipients: [
-          { external_id: req.body.userId },
-          //   {
-          //     topic: {
-          //       subscribers: true, // This will go on the CRON job, not the welcome notification
-          //     },
-          //   },
-        ],
+        recipients: [{ external_id: req.body.userId }],
         category: "default",
       })
     } else {

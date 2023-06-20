@@ -44,7 +44,7 @@ export default function PostSubscribeActions(props: IProps) {
           loading
         />
       )}
-      <div className="">OR</div>
+      {/* <div className="">OR</div>
       <TopicSubscriberWrapper
         description="Now that you have webpush successfully enabled, subscribe to any of
             the HackerNews feeds below and receive a relevant notification about
@@ -52,7 +52,7 @@ export default function PostSubscribeActions(props: IProps) {
         topics={Object.values(topics)}
         interactive={props.interactive}
         onAfterInteract={props.onAfterInteract}
-      />
+      /> */}
     </>
   )
 }
