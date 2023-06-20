@@ -2,11 +2,11 @@
   "crons": [
     {
       "path": "/api/cron/hn_top_story",
-      "schedule": "*/20 * * * *" // every twenty minutes: TODO: change
+      "schedule": "*/20 * * * *"
     },
     {
       "path": "/api/cron/hn_top_new",
-      "schedule": "*/20 * * * *" // every twenty minutes: TODO: change
+      "schedule": "*/20 * * * *"
     }
   ]
 }
