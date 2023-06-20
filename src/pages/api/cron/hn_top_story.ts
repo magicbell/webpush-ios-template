@@ -4,10 +4,8 @@ import { getDatabase, ref, get, limitToFirst, query } from "firebase/database"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { topics } from "@/constants/topics"
 
-interface WelcomeRequest extends NextApiRequest {
-  body: {
-    userId: string
-  }
+interface Request extends NextApiRequest {
+  body: {}
 }
 
 type ResponseData = {
@@ -35,13 +33,11 @@ const firebaseConfig = {
   databaseURL: "https://hacker-news.firebaseio.com",
 }
 
-// TODOOOOOOOOOOO: all of this
-
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
 export default async function handler(
-  req: WelcomeRequest,
+  req: Request,
   res: NextApiResponse<ResponseData>
 ) {
   const docRef = query(ref(db, "v0/topstories"), limitToFirst(5))
@@ -57,15 +53,14 @@ export default async function handler(
       // TODO: check for the first un-notified item
       const firstUnNotifiedItem = fullItems[0]
       await magicbell.notifications.create({
-        title: firstUnNotifiedItem.title,
+        title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
         action_url: firstUnNotifiedItem.url,
         recipients: [
-          { external_id: req.body.userId },
-          //   {
-          //     topic: {
-          //       subscribers: true, // This will go on the CRON job, not the welcome notification
-          //     },
-          //   },
+          {
+            topic: {
+              subscribers: true, // Do not pass a user Id, just notify all subscribers
+            },
+          },
         ],
         category: "default",
         topic: topics["HN Top Story"].id,

@@ -1,6 +1,13 @@
 import MagicBell from "magicbell"
 import { initializeApp } from "firebase/app"
-import { getDatabase, ref, get, limitToFirst, query } from "firebase/database"
+import {
+  getDatabase,
+  ref,
+  get,
+  limitToFirst,
+  query,
+  orderByChild,
+} from "firebase/database"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { topics } from "@/constants/topics"
 
@@ -35,6 +42,8 @@ const firebaseConfig = {
   databaseURL: "https://hacker-news.firebaseio.com",
 }
 
+// TODOOOOOOOOOOO: all of this
+
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
@@ -42,7 +51,7 @@ export default async function handler(
   req: WelcomeRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const docRef = query(ref(db, "v0/topstories"), limitToFirst(5))
+  const docRef = query(ref(db, "v0/newstories"), limitToFirst(40))
 
   get(docRef).then(async (snapshot) => {
     if (snapshot.exists()) {
@@ -52,10 +61,10 @@ export default async function handler(
           get(ref(db, `v0/item/${item}`)).then((snapshot) => snapshot.val())
         )
       )
-      // TODO: check for the first un-notified item
+      fullItems.sort((a, b) => b.score - a.score)
       const firstUnNotifiedItem = fullItems[0]
       await magicbell.notifications.create({
-        title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
+        title: `New: ${firstUnNotifiedItem.title}`,
         action_url: firstUnNotifiedItem.url,
         recipients: [
           { external_id: req.body.userId },
@@ -66,7 +75,7 @@ export default async function handler(
           //   },
         ],
         category: "default",
-        topic: topics["HN Top Story"].id,
+        topic: topics["HN Top New"].id,
       })
     } else {
       console.log("No data available")

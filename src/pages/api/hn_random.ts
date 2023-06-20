@@ -42,7 +42,7 @@ export default async function handler(
   req: WelcomeRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  const docRef = query(ref(db, "v0/topstories"), limitToFirst(5))
+  const docRef = query(ref(db, "v0/topstories"), limitToFirst(30))
 
   get(docRef).then(async (snapshot) => {
     if (snapshot.exists()) {
@@ -52,11 +52,11 @@ export default async function handler(
           get(ref(db, `v0/item/${item}`)).then((snapshot) => snapshot.val())
         )
       )
-      // TODO: check for the first un-notified item
-      const firstUnNotifiedItem = fullItems[0]
+      const randomItem = fullItems[Math.floor(Math.random() * fullItems.length)]
       await magicbell.notifications.create({
-        title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
-        action_url: firstUnNotifiedItem.url,
+        title: `(${randomItem.score}) ${randomItem.title}`,
+        content: randomItem.url,
+        action_url: randomItem.url,
         recipients: [
           { external_id: req.body.userId },
           //   {
@@ -66,7 +66,6 @@ export default async function handler(
           //   },
         ],
         category: "default",
-        topic: topics["HN Top Story"].id,
       })
     } else {
       console.log("No data available")

@@ -10,7 +10,11 @@ type TopicSubscription = {
   }>
 }
 
-export type NotificationType = "welcome" | "hn_top_story" | "hn_top_show"
+export type NotificationType =
+  | "welcome"
+  | "hn_top_story"
+  | "hn_top_new"
+  | "hn_random"
 
 class MagicBell {
   constructor() {}
@@ -137,8 +141,8 @@ class MagicBell {
     switch (topic) {
       case topics["HN Top Story"].id:
         return "hn_top_story"
-      case topics["HN Top Show"].id:
-        return "hn_top_show"
+      case topics["HN Top New"].id:
+        return "hn_top_new"
       default:
         return "welcome"
     }
