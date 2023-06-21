@@ -1,7 +1,5 @@
 import React from "react"
 import Button from "./button"
-import subscriptionManager from "@/services/subscriptionManager"
-import { clientSettings } from "@magicbell/react-headless"
 import TopicSubscriberWrapper from "./topic-subscriber-wrapper"
 import { topics } from "@/constants/topics"
 import magicBell from "@/services/magicBell"

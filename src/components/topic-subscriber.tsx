@@ -48,13 +48,13 @@ export default function TopicSubscriber(
           <path
             d="M5.50076 7L7.00078 8.5"
             stroke="currentColor"
-            stroke-linecap="round"
+            strokeLinecap="round"
             className="animate-stroke"
           />
           <path
             d="M7.00076 8.5L10.0008 4.5"
             stroke="currentColor"
-            stroke-linecap="round"
+            strokeLinecap="round"
             className="animate-stroke"
             style={{ animationDelay: "0.4s" }}
           />
