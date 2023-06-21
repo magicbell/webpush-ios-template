@@ -1,7 +1,5 @@
 import React from "react"
 import Button from "./button"
-import subscriptionManager from "@/services/subscriptionManager"
-import { clientSettings } from "@magicbell/react-headless"
 import TopicSubscriberWrapper from "./topic-subscriber-wrapper"
 import { topics } from "@/constants/topics"
 import magicBell from "@/services/magicBell"
@@ -44,15 +42,28 @@ export default function PostSubscribeActions(props: IProps) {
           loading
         />
       )}
-      {/* <div className="">OR</div>
+      <div className="text-purple-300">OR</div>
       <TopicSubscriberWrapper
-        description="Now that you have webpush successfully enabled, subscribe to any of
-            the HackerNews feeds below and receive a relevant notification about
-            top posts every 6 hours. Unsubscribe at any time."
+        renderDescription={() => (
+          <span>
+            {" "}
+            Now that you have webpush successfully enabled, subscribe to any of
+            the{" "}
+            <a
+              className="text-text"
+              href="https://news.ycombinator.com/"
+              target="_blank"
+            >
+              HackerNews
+            </a>{" "}
+            feeds below and receive a relevant notification about top posts
+            every 6 hours. Unsubscribe at any time.
+          </span>
+        )}
         topics={Object.values(topics)}
         interactive={props.interactive}
         onAfterInteract={props.onAfterInteract}
-      /> */}
+      />
     </>
   )
 }

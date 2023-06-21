@@ -40,6 +40,11 @@ export default async function handler(
   req: Request,
   res: NextApiResponse<ResponseData>
 ) {
+  if (req.query.key !== process.env.VERCEL_CRON_KEY) {
+    res.status(404).end()
+    return
+  }
+
   const docRef = query(ref(db, "v0/topstories"), limitToFirst(5))
 
   await get(docRef).then(async (snapshot) => {
@@ -50,25 +55,40 @@ export default async function handler(
           get(ref(db, `v0/item/${item}`)).then((snapshot) => snapshot.val())
         )
       )
+      fullItems.sort((a, b) => b.score - a.score)
       // TODO: check for the first un-notified item
       const firstUnNotifiedItem = fullItems[0]
-      return magicbell.notifications.create({
-        title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
-        action_url: firstUnNotifiedItem.url,
-        recipients: [
-          {
-            topic: {
-              subscribers: true, // Do not pass a user Id, just notify all subscribers
-            },
+      return fetch("https://api.magicbell.com/notifications", {
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "X-MAGICBELL-API-KEY": process.env.NEXT_PUBLIC_MAGICBELL_API_KEY,
+          "X-MAGICBELL-API-SECRET": process.env.MAGICBELL_API_SECRET,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          notification: {
+            title: `(${firstUnNotifiedItem.score}) ${firstUnNotifiedItem.title}`,
+            action_url: firstUnNotifiedItem.url,
+            category: "default",
+            topic: topics["HN Top New"].id,
+            recipients: [
+              {
+                topic: {
+                  subscribers: true,
+                },
+              },
+            ],
           },
-        ],
-        category: "default",
-        topic: topics["HN Top New"].id,
-      })
+        }),
+      }).then((response) => response.json())
     } else {
       console.log("No data available")
+      return "no data"
     }
   })
 
-  res.status(200).json({ status: "success" })
+  res.status(200).json({
+    status: "success",
+  })
 }

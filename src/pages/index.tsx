@@ -16,6 +16,7 @@ import PostSubscribeActions from "@/components/post-subscribe-actions"
 const inter = Inter({ subsets: ["latin"] })
 
 const resendDelay = 10 * 1000
+const enableSuccessMessage = false
 
 export type State =
   | { status: "idle" | "busy" | "success" }
@@ -98,7 +99,7 @@ export default function Home() {
         </>
       )
     }
-    if (state.status === "success") {
+    if (state.status === "success" && enableSuccessMessage) {
       return (
         <>
           <section className="text-center text-muted text-sm mx-2 my-4">
@@ -128,7 +129,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (state.status === "success" || state.status === "error") {
+    if (state.status === "error") {
       setFooterOpen(true)
     }
   }, [state.status])

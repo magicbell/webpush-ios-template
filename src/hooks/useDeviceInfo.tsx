@@ -1,4 +1,3 @@
-import SubscriptionManager from "@/services/subscriptionManager"
 import subscriptionManager from "@/services/subscriptionManager"
 import { createContext, useContext, useEffect, useState } from "react"
 import { clientSettings } from "@magicbell/react-headless"
