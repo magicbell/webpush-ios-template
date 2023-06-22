@@ -1,4 +1,6 @@
 import React, { useCallback, useState } from "react"
+import va from "@vercel/analytics"
+
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import magicBell from "@/services/magicBell"
 import subscriptionManager from "@/services/subscriptionManager"
@@ -21,6 +23,9 @@ export default function TopicSubscriber(
     await magicBell.unsubscribeFromTopic(props.id)
     setUnsubscribing(false)
     subscriptionManager.triggerListeners()
+    va.track("unsubscribe", {
+      topic: props.id,
+    })
   }, [props])
 
   const handleSubscribe = useCallback(async () => {
@@ -29,6 +34,9 @@ export default function TopicSubscriber(
     setSubscribing(false)
     subscriptionManager.triggerListeners()
     if (props.onAfterInteract) props.onAfterInteract()
+    va.track("subscribe", {
+      topic: props.id,
+    })
   }, [props])
 
   return (
