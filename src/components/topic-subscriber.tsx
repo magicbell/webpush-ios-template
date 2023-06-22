@@ -37,7 +37,7 @@ export default function TopicSubscriber(
         disabled={props.idle || subscribing || unsubscribing}
         type="button"
         className={
-          "inline-flex items-center gap-x-2 rounded-md border-primary border-2 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:enabled:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 " +
+          "text-left inline-flex items-center gap-x-2 rounded-md border-primary border-2 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:enabled:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 " +
           (isSubscribed
             ? "bg-primary hover:enabled:bg-transparent"
             : "bg-transparent")
