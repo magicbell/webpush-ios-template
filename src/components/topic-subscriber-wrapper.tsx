@@ -11,14 +11,9 @@ interface IProps {
 export default function TopicSubscriberWrapper(props: IProps) {
   return (
     <div className="">
-      <div className="flex gap-4 items-center my-3">
-        {props.renderDescription ? (
-          <p className="text-muted text-xs">{props.renderDescription()}</p>
-        ) : null}
-      </div>
       <div
         className="grid gap-4 items-center justify-center"
-        style={{ gridTemplateColumns: "20px 1fr 75px" }}
+        style={{ gridTemplateColumns: "1fr" }}
       >
         {props.topics.map((topic) => {
           return (
@@ -30,6 +25,11 @@ export default function TopicSubscriberWrapper(props: IProps) {
             />
           )
         })}
+      </div>
+      <div className="flex gap-4 items-center my-3">
+        {props.renderDescription ? (
+          <p className="text-muted text-xs">{props.renderDescription()}</p>
+        ) : null}
       </div>
     </div>
   )

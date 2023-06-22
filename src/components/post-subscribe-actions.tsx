@@ -42,7 +42,7 @@ export default function PostSubscribeActions(props: IProps) {
           loading
         />
       )}
-      <div className="text-purple-300">OR</div>
+      <div className="text-purple-300 mb-4">OR</div>
       <TopicSubscriberWrapper
         renderDescription={() => (
           <span>
@@ -56,7 +56,7 @@ export default function PostSubscribeActions(props: IProps) {
             >
               HackerNews
             </a>{" "}
-            feeds below and receive a relevant notification about top posts
+            feeds above and receive a relevant notification about top posts
             every 6 hours. Unsubscribe at any time.
           </span>
         )}

@@ -1,4 +1,6 @@
 import React, { useCallback, useState } from "react"
+import va from "@vercel/analytics"
+
 import useDeviceInfo from "@/hooks/useDeviceInfo"
 import magicBell from "@/services/magicBell"
 import subscriptionManager from "@/services/subscriptionManager"
@@ -21,6 +23,9 @@ export default function TopicSubscriber(
     await magicBell.unsubscribeFromTopic(props.id)
     setUnsubscribing(false)
     subscriptionManager.triggerListeners()
+    va.track("unsubscribe", {
+      topic: props.id,
+    })
   }, [props])
 
   const handleSubscribe = useCallback(async () => {
@@ -29,106 +34,48 @@ export default function TopicSubscriber(
     setSubscribing(false)
     subscriptionManager.triggerListeners()
     if (props.onAfterInteract) props.onAfterInteract()
+    va.track("subscribe", {
+      topic: props.id,
+    })
   }, [props])
 
   return (
     <div className="contents" key={props.id}>
-      {isSubscribed && !unsubscribing ? (
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 15 15"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.62283 -2.86102e-06C3.96514 -2.86102e-06 1 2.96514 1 6.62283C1 10.2805 3.96514 13.2457 7.62283 13.2457C11.2805 13.2457 14.2456 10.2805 14.2456 6.62283C14.2456 2.96514 11.2805 -2.86102e-06 7.62283 -2.86102e-06ZM1.95 6.62283C1.95 3.48981 4.48981 0.949992 7.62283 0.949992C10.7558 0.949992 13.2956 3.48981 13.2956 6.62283C13.2956 9.75585 10.7558 12.2957 7.62283 12.2957C4.48981 12.2957 1.95 9.75585 1.95 6.62283Z"
-            fill="currentColor"
-          />
-          <path
-            d="M5.50076 7L7.00078 8.5"
-            stroke="currentColor"
-            strokeLinecap="round"
-            className="animate-stroke"
-          />
-          <path
-            d="M7.00076 8.5L10.0008 4.5"
-            stroke="currentColor"
-            strokeLinecap="round"
-            className="animate-stroke"
-            style={{ animationDelay: "0.4s" }}
-          />
-        </svg>
-      ) : (
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 15 15"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className={subscribing || unsubscribing ? "animate-spin" : ""}
-        >
-          <path
-            d={
-              subscribing || unsubscribing
-                ? "M12.3708 9.3655C11.5074 11.3965 9.4939 12.8207 7.14783 12.8207C4.01482 12.8207 1.475 10.2808 1.475 7.14783C1.475 4.01482 4.01482 1.475 7.14783 1.475C7.90935 1.475 8.63583 1.62505 9.2993 1.89721L9.69682 1.03331C8.91221 0.705847 8.05114 0.525 7.14783 0.525C3.49015 0.525 0.525 3.49015 0.525 7.14783C0.525 10.8055 3.49015 13.7707 7.14783 13.7707C9.87677 13.7707 12.2202 12.1201 13.2344 9.76286L12.3708 9.3655Z"
-                : "M0.877075 7.49991C0.877075 3.84222 3.84222 0.877075 7.49991 0.877075C11.1576 0.877075 14.1227 3.84222 14.1227 7.49991C14.1227 11.1576 11.1576 14.1227 7.49991 14.1227C3.84222 14.1227 0.877075 11.1576 0.877075 7.49991ZM7.49991 1.82708C4.36689 1.82708 1.82708 4.36689 1.82708 7.49991C1.82708 10.6329 4.36689 13.1727 7.49991 13.1727C10.6329 13.1727 13.1727 10.6329 13.1727 7.49991C13.1727 4.36689 10.6329 1.82708 7.49991 1.82708Z"
-            }
-            fill="currentColor"
-            fillRule="evenodd"
-            clipRule="evenodd"
-          ></path>
-        </svg>
-      )}
       <button
-        disabled={isSubscribed || props.idle || subscribing}
+        disabled={props.idle || subscribing || unsubscribing}
         type="button"
-        className="inline-flex items-center gap-x-2 rounded-md border-primary border-2 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:enabled:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
-        onClick={handleSubscribe}
+        className={
+          "hover-button text-left inline-flex items-center gap-x-2 rounded-md px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+        }
+        onClick={isSubscribed ? handleUnsubscribe : handleSubscribe}
       >
-        {`Subscribe to ${props.name}`}
+        {isSubscribed ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 640 512"
+            width="15"
+            height="15"
+            fill="currentColor"
+            className="shrink-0"
+          >
+            <path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L542.6 400c2.7-7.8 1.3-16.5-3.9-23l-14.9-18.6C495.5 322.9 480 278.8 480 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V49.9c-43.9 7-81.5 32.7-104.4 68.7L38.8 5.1zM221.7 148.4C239.6 117.1 273.3 96 312 96h8 8c57.4 0 104 46.6 104 104v33.4c0 32.7 6.4 64.8 18.7 94.5L221.7 148.4zM406.2 416l-60.9-48H168.3c21.2-32.8 34.4-70.3 38.4-109.1L160 222.1v11.4c0 45.4-15.5 89.5-43.8 124.9L101.3 377c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6H406.2zM384 448H320 256c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z" />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            width="12"
+            height="12"
+            fill="currentColor"
+            className="shrink-0"
+          >
+            <path d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z" />
+          </svg>
+        )}
+        {isSubscribed
+          ? `Unsubscribe from ${props.name}`
+          : `Subscribe to ${props.name}`}
       </button>
-      {unsubscribing ? (
-        <div></div>
-      ) : isSubscribed ? (
-        <button
-          className="text-muted text-xs hover:enabled:text-text"
-          onClick={handleUnsubscribe}
-          disabled={props.idle}
-        >
-          Unsubscribe
-        </button>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 256 256"
-          id="bell-slash"
-          width={15}
-          height={15}
-          className="mx-auto"
-        >
-          <rect width="256" height="256" fill="none"></rect>
-          <line
-            x1="48"
-            x2="208"
-            y1="40"
-            y2="216"
-            fill="none"
-            stroke="#fff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="24"
-          ></line>
-          <path
-            fill="none"
-            stroke="#fff"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="24"
-            d="M96 192v8a32 32 0 0 0 64 0v-8M186.18182 192H48.98365A7.99908 7.99908 0 0 1 42.103 179.95641c6.60328-11.35959 14.1-32.1426 14.1-67.95641v-8A71.80594 71.80594 0 0 1 68.9457 63.0404M99.96516 37.69664A71.42478 71.42478 0 0 1 128.5484 32.002c39.58967.29432 71.25651 33.20133 71.25651 72.90185V112a189.04639 189.04639 0 0 0 3.776 39.67466"
-          ></path>
-        </svg>
-      )}
     </div>
   )
 }

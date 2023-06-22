@@ -22,12 +22,6 @@ body,
 
 @layer base {
 
-    /* animate the stroke property of the check */
-    .animate-stroke {
-        animation: animate-stroke 2s forwards;
-        stroke-dasharray: 0 100%;
-    }
-
     .hover-button:not(:disabled) {
         opacity: 0.7;
         transition: all 0.2s ease-in-out;
@@ -125,16 +119,6 @@ body,
     .ToastRoot[data-swipe='end'] {
         animation: swipeOut 100ms ease-out;
     }
-
-    @keyframes animate-stroke {
-        0% {
-            stroke-dasharray: 0 100;
-        }
-        100% {
-            stroke-dasharray: 100% 0;
-        }
-    }
-
 
     @keyframes weave {
         0% {

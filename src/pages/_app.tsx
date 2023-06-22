@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 import type { AppProps } from "next/app"
 import { Analytics } from "@vercel/analytics/react"
-import { MagicBellProvider, clientSettings } from "@magicbell/react-headless"
+import { MagicBellProvider } from "@magicbell/react-headless"
 import { SubscriptionManager } from "@/services/subscriptionManager"
 import { DeviceInfoProvider } from "@/hooks/useDeviceInfo"
 
