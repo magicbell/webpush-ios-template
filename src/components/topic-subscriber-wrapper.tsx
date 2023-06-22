@@ -18,7 +18,7 @@ export default function TopicSubscriberWrapper(props: IProps) {
       </div>
       <div
         className="grid gap-4 items-center justify-center"
-        style={{ gridTemplateColumns: "20px 1fr 75px" }}
+        style={{ gridTemplateColumns: "1fr" }}
       >
         {props.topics.map((topic) => {
           return (
