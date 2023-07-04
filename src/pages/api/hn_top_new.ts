@@ -42,8 +42,6 @@ const firebaseConfig = {
   databaseURL: "https://hacker-news.firebaseio.com",
 }
 
-// TODOOOOOOOOOOO: all of this
-
 const app = initializeApp(firebaseConfig)
 const db = getDatabase(app)
 
