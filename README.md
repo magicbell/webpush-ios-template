@@ -12,6 +12,7 @@ Relevant links:
 
 - [Magic bell now supports push notifications (and why you should care)](https://www.magicbell.com/blog/ios-now-supports-web-push-notifications-and-why-you-should-care)
 - [Twitter thread](https://twitter.com/Matt0xley/status/1668912123702030336)
+- Link to our [Slack power-users group](https://magicbell.to/slack)
 
 ## Running locally
 
