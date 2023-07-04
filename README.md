@@ -12,6 +12,7 @@ Relevant links:
 
 - [Magic bell now supports push notifications (and why you should care)](https://www.magicbell.com/blog/ios-now-supports-web-push-notifications-and-why-you-should-care)
 - [Twitter thread](https://twitter.com/Matt0xley/status/1668912123702030336)
+- Link to our [Slack power-users group](https://magicbell.to/slack)
 
 ## Running locally
 
@@ -21,7 +22,7 @@ First, install dependencies:
 npm install
 ```
 
-Then, obtain the NEXT_PUBLIC_MAGICBELL_API_KEY and NEXT_PUBLIC_MAGICBELL_API_SECRET from the [MagicBell](https://www.magicbell.com/) dashboard and set them as environment variables in a `.env` file at the root of this project:
+Then, assuming you have a MagicBell account and have created a new project, obtain the NEXT_PUBLIC_MAGICBELL_API_KEY and MAGICBELL_API_SECRET from the [MagicBell](https://www.magicbell.com/) dashboard and set them as environment variables in a `.env` file at the root of this project:
 
 ```bash
 NEXT_PUBLIC_MAGICBELL_API_KEY=...
