@@ -1,38 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# About this project
 
-## Getting Started
+Apple released [beta](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados) support for Web Push notifications on iOS in February 2023, and made it official with the release of iOS 16.5 in [May 2023](https://www.macrumors.com/2023/05/09/apple-confirms-ios-16-5-release-date/).
 
-First, run the development server:
+This project, hosted at https://webpushtest.com, showcases these new capabilities. In addition to iOS, it can also send Web Push notifications on desktop and Android (although this is somewhat old news).
+
+It is targeted at the end user, for whom installing a PWA and receiving a Web Push notification will likely be a new experience. As such, we have tried to include instructional information and device-specific error messages where relevant.
+
+It will hopefully also be useful for developers, who can use it as a basis for providing push notification support in their own web apps.
+
+Relevant links:
+
+- [Magic bell now supports push notifications (and why you should care)](https://www.magicbell.com/blog/ios-now-supports-web-push-notifications-and-why-you-should-care)
+- [Twitter thread](https://twitter.com/Matt0xley/status/1668912123702030336)
+
+## Running locally
+
+First, install dependencies:
+
+```bash
+npm install
+```
+
+Then, obtain the NEXT_PUBLIC_MAGICBELL_API_KEY and NEXT_PUBLIC_MAGICBELL_API_SECRET from the [MagicBell](https://www.magicbell.com/) dashboard and set them as environment variables in a `.env` file at the root of this project:
+
+```bash
+NEXT_PUBLIC_MAGICBELL_API_KEY=...
+MAGICBELL_API_SECRET=...
+```
+
+Then, start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+To observe iOS push notifications from your local development environment, you will need to expose your local server to the internet. We recommend using [ngrok](https://ngrok.com/):
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+ngrok http 3000
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+After visiting the resulting public url on your device, be sure to also install the app as a PWA, using the "Add to Home Screen" option in the Safari share menu.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Important files
 
-## Learn More
+These will be the most relevant files to look at if you want to understand how this project works:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- https://github.com/magicbell-io/webpush-test/blob/main/src/components/subscriber.tsx
+- https://github.com/magicbell-io/webpush-test/blob/main/src/services/subscriptionManager.ts
+- https://github.com/magicbell-io/webpush-test/blob/main/public/manifest.json
