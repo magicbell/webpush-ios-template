@@ -1,10 +1,9 @@
-import Image from "next/image"
-import React from "react"
+import Image from "next/image";
 
 function Tile(props: {
-  index: number
-  caption: string
-  captionHeight?: number
+  index: number;
+  caption: string;
+  captionHeight?: number;
 }) {
   return (
     <figure
@@ -25,18 +24,18 @@ function Tile(props: {
         fill
       />
     </figure>
-  )
+  );
 }
 
 export default function IosInstructionalStatic() {
   return (
     <>
-      <h3
+      <h2
         className="text-center h-12 uppercase text-xs flex items-center justify-center"
         style={{ letterSpacing: "2px" }}
       >
         Installation instructions
-      </h3>
+      </h2>
       <section className="w-full max-w-xs mx-auto">
         <Tile index={1} caption={"In Safari, click the 'share' button"} />
         <Tile index={2} caption={"Click 'Add to Home Screen'"} />
@@ -44,5 +43,5 @@ export default function IosInstructionalStatic() {
         <Tile index={4} caption={"Launch app from home screen"} />
       </section>
     </>
-  )
+  );
 }

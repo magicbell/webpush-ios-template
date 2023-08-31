@@ -9,6 +9,7 @@ import Footer from "@/components/footer";
 import IosInstructionalStatic from "@/components/ios-instructional-static";
 import Links from "@/components/links";
 import PostSubscribeActions from "@/components/post-subscribe-actions";
+import SeoText from "@/components/seo-text";
 import Subscriber from "@/components/subscriber";
 import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo";
 import minVersionCheck from "@/utils/minVersionCheck";
@@ -58,25 +59,7 @@ export default function Home() {
         </p>
       );
     }
-    return (
-      <>
-        <h3
-          className="text-center h-12 uppercase text-xs flex items-center justify-center"
-          style={{ letterSpacing: "2px" }}
-        >
-          Web Push Notifications Demo
-        </h3>
-        <section className="w-full max-w-xs mx-auto">
-          <p>
-            This is a demo of standards based web-push notifications on all
-            platforms, including iOS. We don't use any personal information (not
-            even Device ID), and utilize the Hacker News dataset to demo one-off
-            or scheduled notifications. The code is open source and we encourage
-            you to use it for your product!
-          </p>
-        </section>
-      </>
-    );
+    return null;
   }
 
   function actions(state: State) {
@@ -171,7 +154,7 @@ export default function Home() {
           inter.className
         }
       >
-        WebPushTest.com
+        <h1>Web Push Notifications Demo</h1>
       </header>
 
       <Head>
@@ -200,6 +183,7 @@ export default function Home() {
             <ContentWrapper message={""}>{actions(state)}</ContentWrapper>
             {result(state)}
             <Links />
+            <SeoText />
             <Disclaimer />
           </div>
         )}
