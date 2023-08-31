@@ -1,51 +1,52 @@
-import Head from "next/head"
-import { useEffect, useState } from "react"
-import { Inter } from "next/font/google"
+import { Inter } from "next/font/google";
+import Head from "next/head";
+import { useEffect, useState } from "react";
 
-import Subscriber from "@/components/subscriber"
-import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo"
-import IosInstructionalStatic from "@/components/ios-instructional-static"
-import ContentWrapper from "@/components/content-wrapper"
-import ErrorDiagnostics from "@/components/error-diagnostics"
-import minVersionCheck from "@/utils/minVersionCheck"
-import Disclaimer, { magicBellHandle } from "@/components/disclaimer"
-import Footer from "@/components/footer"
-import Links from "@/components/links"
-import PostSubscribeActions from "@/components/post-subscribe-actions"
+import ContentWrapper from "@/components/content-wrapper";
+import Disclaimer, { magicBellHandle } from "@/components/disclaimer";
+import ErrorDiagnostics from "@/components/error-diagnostics";
+import Footer from "@/components/footer";
+import IosInstructionalStatic from "@/components/ios-instructional-static";
+import Links from "@/components/links";
+import PostSubscribeActions from "@/components/post-subscribe-actions";
+import Subscriber from "@/components/subscriber";
+import useDeviceInfo, { DeviceInfo } from "@/hooks/useDeviceInfo";
+import minVersionCheck from "@/utils/minVersionCheck";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
-const resendDelay = 10 * 1000
-const enableSuccessMessage = false
+const resendDelay = 10 * 1000;
+const enableSuccessMessage = false;
 
 export type State =
   | { status: "idle" | "busy" | "success" }
   | { status: "error"; error: string }
-  | { status: "unsupported" }
+  | { status: "unsupported" };
 
 export default function Home() {
-  const [footerOpen, setFooterOpen] = useState(false)
-  const [canResendNotification, setCanResendNotification] = useState(false)
-  const [state, setState] = useState<State>({ status: "idle" })
-  const info = useDeviceInfo()
+  const [footerOpen, setFooterOpen] = useState(false);
+  const [canResendNotification, setCanResendNotification] = useState(false);
+  const [state, setState] = useState<State>({ status: "idle" });
+  const info = useDeviceInfo();
 
   function anticipateSubscriptionFailure(info: DeviceInfo) {
     if (info.osName === "iOS") {
       if (minVersionCheck(info.osVersion.toString(), 16, 5)) {
-        if (!info.standalone) return <IosInstructionalStatic />
+        if (!info.standalone) return <IosInstructionalStatic />;
       } else {
         return (
           <p className="text-center text-red-400 my-6">
-            This demo requires iOS 16.5 or later. Please run a software update
-            to continue.
+            This web push notifications demo requires iOS 16.5 or later. Please
+            run a software update to continue.
           </p>
-        )
+        );
       }
     }
     if (info.isPrivate) {
       return (
         <p className="text-center text-red-400 my-6">
-          This demo requires a non-private browser window, since the{" "}
+          This web push notifications demo requires a non-private browser
+          window, since the{" "}
           <a
             href="https://developer.mozilla.org/en-US/docs/Web/API/Notification"
             target="_blank"
@@ -55,49 +56,67 @@ export default function Home() {
           </a>{" "}
           is set to &quot;denied&quot; by default.
         </p>
-      )
+      );
     }
-    return null
+    return (
+      <>
+        <h3
+          className="text-center h-12 uppercase text-xs flex items-center justify-center"
+          style={{ letterSpacing: "2px" }}
+        >
+          Web Push Notifications Demo
+        </h3>
+        <section className="w-full max-w-xs mx-auto">
+          <p>
+            This is a demo of standards based web-push notifications on all
+            platforms, including iOS. We don't use any personal information (not
+            even Device ID), and utilize the Hacker News dataset to demo one-off
+            or scheduled notifications. The code is open source and we encourage
+            you to use it for your product!
+          </p>
+        </section>
+      </>
+    );
   }
 
   function actions(state: State) {
     if (!info) {
-      return null
+      return null;
     }
     if (state.status === "success" || info.subscriptionState === "subscribed") {
       return (
         <PostSubscribeActions
           interactive={canResendNotification}
           onAfterInteract={() => {
-            setCanResendNotification(false)
+            setCanResendNotification(false);
             setTimeout(() => {
-              setCanResendNotification(true)
-            }, resendDelay)
+              setCanResendNotification(true);
+            }, resendDelay);
           }}
           onError={(error) => {
-            setState({ status: "error", error })
+            setState({ status: "error", error });
           }}
         />
-      )
+      );
     }
 
     if (anticipateSubscriptionFailure(info)) {
-      return anticipateSubscriptionFailure(info)
+      return anticipateSubscriptionFailure(info);
     }
 
-    return <Subscriber state={state} setState={setState} />
+    return <Subscriber state={state} setState={setState} />;
   }
 
   function result(state: State) {
     if (state.status === "idle" || state.status === "busy") {
-      return
+      return;
     }
     if (state.status === "error") {
       return (
         <>
           <ErrorDiagnostics error={state.error}></ErrorDiagnostics>
         </>
-      )
+      );
     }
     if (state.status === "success" && enableSuccessMessage) {
       return (
@@ -124,25 +143,25 @@ export default function Home() {
             </p>
           </section>
         </>
-      )
+      );
     }
   }
 
   useEffect(() => {
     if (state.status === "error") {
-      setFooterOpen(true)
+      setFooterOpen(true);
     }
-  }, [state.status])
+  }, [state.status]);
 
   useEffect(() => {
     if (state.status === "success") {
       setTimeout(() => {
-        setCanResendNotification(true)
-      }, resendDelay)
+        setCanResendNotification(true);
+      }, resendDelay);
     } else if (info?.subscriptionState === "subscribed") {
-      setCanResendNotification(true)
+      setCanResendNotification(true);
     }
-  }, [state.status, info?.subscriptionState])
+  }, [state.status, info?.subscriptionState]);
 
   return (
     <>
@@ -156,7 +175,7 @@ export default function Home() {
       </header>
 
       <Head>
-        <title>Web Push Notifications Demo | Magic Bell</title>
+        <title>Web Push Notifications Demo | MagicBell</title>
         <meta
           name="description"
           content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
@@ -187,5 +206,5 @@ export default function Home() {
       </main>
       <Footer open={footerOpen} setOpen={setFooterOpen} />
     </>
-  )
+  );
 }
