@@ -1,5 +1,5 @@
 {
-  "name": "Web Push Test",
+  "name": "Web Push Test Demo",
   "short_name": "WebPushTest",
   "start_url": "/",
   "display": "standalone",
