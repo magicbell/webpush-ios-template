@@ -6,9 +6,7 @@ This project, hosted at https://webpushtest.com, showcases these new capabilitie
 
 It is targeted at the end user, for whom installing a PWA and receiving a Web Push notification will likely be a new experience. As such, we have tried to include instructional information and device-specific error messages where relevant. Take a look at this Youtube short
 
-[![Demo of WebPushTest.com on Youtube]
-(https://img.youtube.com/vi/aIlGLE_adzc/maxresdefault.jpg)]
-(https://www.youtube.com/watch?v=aIlGLE_adzc)
+{% include youtube.html id="aIlGLE_adzc" %}
 
 You can use the code for providing push notification support in your web/PWA apps, but you will need an API key from [MagicBell](https://www.magicbell.com). We offer a generous free tier so you can get started quickly. Apart from web-push, we offer a real-time in-app notification inbox you can add to your app in minutes.
 
