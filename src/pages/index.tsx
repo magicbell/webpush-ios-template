@@ -158,16 +158,19 @@ export default function Home() {
       </header>
 
       <Head>
-        <title>Web Push Notifications Demo | MagicBell</title>
+        <title>Web Push Notifications on iOS Demo & Test</title>
         <meta
           name="description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          content="Web push notifications demo on iOS and Android. Get the free starter template with support for iOS Safari PWA notifications."
           key="desc"
         />
-        <meta property="og:title" content="Web Push Notifications Demo" />
+        <meta
+          property="og:title"
+          content="Web Push Notifications on iOS Demo & Test"
+        />
         <meta
           property="og:description"
-          content="Web push notifications demo and starter template with support for iOS Safari PWA notifications."
+          content="Web push notifications demo on iOS and Android. Get the free starter template with support for iOS Safari PWA notifications."
         />
         <meta property="og:image" content="/sharing-image.png" />
         <meta property="og:image:width" content="432" />
