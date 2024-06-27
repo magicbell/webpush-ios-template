@@ -14,7 +14,7 @@ Relevant links:
 
 - [iOS now supports push notifications (and why you should care)](https://www.magicbell.com/blog/ios-now-supports-web-push-notifications-and-why-you-should-care)
 - [Twitter thread](https://twitter.com/Matt0xley/status/1668912123702030336)
-- If you'd like help, please start a [GitHub Discussion|(https://github.com/orgs/magicbell-io/discussions).
+- If you'd like help, please start a [GitHub Discussion|(https://github.com/orgs/magicbell/discussions).
 
 ## Running locally
 
@@ -51,7 +51,7 @@ After visiting the resulting public url on your device, be sure to also install 
 
 These will be the most relevant files to look at if you want to understand how this project works:
 
-- https://github.com/magicbell-io/webpush-test/blob/main/src/components/subscriber.tsx
-- https://github.com/magicbell-io/webpush-test/blob/main/src/services/subscriptionManager.ts
-- https://github.com/magicbell-io/webpush-test/blob/main/public/manifest.json
-- https://github.com/magicbell-io/webpush-test/blob/main/public/sw.js
+- https://github.com/magicbell/webpush-test/blob/main/src/components/subscriber.tsx
+- https://github.com/magicbell/webpush-test/blob/main/src/services/subscriptionManager.ts
+- https://github.com/magicbell/webpush-test/blob/main/public/manifest.json
+- https://github.com/magicbell/webpush-test/blob/main/public/sw.js

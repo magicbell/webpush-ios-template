@@ -9,7 +9,7 @@ export default function Links() {
       }}
     >
       <a
-        href="https://github.com/magicbell-io/webpush-test"
+        href="https://github.com/magicbell/webpush-test"
         className="contents text-muted hover:text-text"
         target="_blank"
       >
