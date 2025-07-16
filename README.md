@@ -1,57 +1,49 @@
-# About this project
+<div align="center"> 
+<a href="https://magicbell.com">
+    <img src="public/logo-128x128.svg">
+    <h1>MagicBell</h1>
+</a>
 
-Apple released [beta](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados) support for Web Push notifications on iOS in February 2023, and made it official with the release of iOS 16.5 in [May 2023](https://www.macrumors.com/2023/05/09/apple-confirms-ios-16-5-release-date/).
+<a href="https://magicbell.com/docs">
+    <img alt="Read the MagicBell Docs" src="https://img.shields.io/badge/Read%20the%20docs-23283B.svg?style=for-the-badge">
+</a>
+<a href="https://magicbell.to/community">
+    <img alt="Discuss on GitHub" src="https://img.shields.io/badge/Discuss%20on%20GitHub-black.svg?style=for-the-badge&logo=github&labelColor=000000&logoWidth=20">
+</a>
+</div>
 
-This project, hosted at https://webpushtest.com, showcases these new capabilities. In addition to iOS, it can also send Web Push notifications on desktop and Android (although this is somewhat old news).
+## Web Push Template
 
-It is targeted at the end user, for whom installing a PWA and receiving a Web Push notification will likely be a new experience. As such, we have tried to include instructional information and device-specific error messages where relevant. Take a look at this Youtube short
+A minimal Next.js starter template for building Web Push Notification services with MagicBell.
 
-[![Demo of WebPushTest.com on Youtube](https://img.youtube.com/vi/aIlGLE_adzc/maxresdefault.jpg)](https://www.youtube.com/watch?v=aIlGLE_adzc)
+### Getting Started
 
-You can use the code for providing push notification support in your web/PWA apps, but you will need an API key from [MagicBell](https://www.magicbell.com). We offer a generous free tier so you can get started quickly. Apart from web-push, we offer a real-time in-app notification inbox you can add to your app in minutes.
-
-Relevant links:
-
-- [iOS now supports push notifications (and why you should care)](https://www.magicbell.com/blog/ios-now-supports-web-push-notifications-and-why-you-should-care)
-- [Twitter thread](https://twitter.com/Matt0xley/status/1668912123702030336)
-- If you'd like help, please start a [GitHub Discussion|(https://github.com/orgs/magicbell/discussions).
-
-## Running locally
-
-First, install dependencies:
-
-```bash
-npm install
-```
-
-Then, assuming you have a MagicBell account and have created a new project, obtain the NEXT_PUBLIC_MAGICBELL_API_KEY and MAGICBELL_API_SECRET from the [MagicBell](https://www.magicbell.com/) dashboard and set them as environment variables in a `.env` file at the root of this project:
-
-```bash
-NEXT_PUBLIC_MAGICBELL_API_KEY=...
-MAGICBELL_API_SECRET=...
-```
-
-Then, start the development server:
+Clone the repository and run the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [https://localhost:3000](https://localhost:3000) with your browser to see the result.
 
-To observe iOS push notifications from your local development environment, you will need to expose your local server to the internet. We recommend using [ngrok](https://ngrok.com/):
+> [!NOTE]
+> The development server is launched with https to ensure the notifications are visible locally.
 
-```bash
-ngrok http 3000
-```
+To start sending web push notifications you need to be signed in to your [MagicBell](https://magicbell.com) account.
 
-After visiting the resulting public url on your device, be sure to also install the app as a PWA, using the "Add to Home Screen" option in the Safari share menu.
+1. Rename the `.env.example` file to `.env`.
+2. [Obtain your API Key and your Secret Key from the dashboard.](https://app.magicbell.com/projects/_/settings/user-auth)
+3. In your `.env` file update the value of `MAGICBELL_API_KEY` and `MAGICBELL_SECRET_KEY` to your API Key and Secret Key respectively.
+4. [Get the Project Token from the dashboard.](https://app.magicbell.com/projects/_/settings/project-auth)
+5. In your `.env` file update the value of `MAGICBELL_PROJECT_TOKEN` to your Project Token.
 
-## Important files
+Finally, replace the `userId` in `src/app/auth.ts` and `src/app/page.tsx` to make sure you're sending notifications to the correct user.
 
-These will be the most relevant files to look at if you want to understand how this project works:
+> [!TIP]
+> You can find [detailed instructions on authentication in the MagicBell Docs](https://magicbell.com/docs/api/authentication).
 
-- https://github.com/magicbell/webpush-test/blob/main/src/components/subscriber.tsx
-- https://github.com/magicbell/webpush-test/blob/main/src/services/subscriptionManager.ts
-- https://github.com/magicbell/webpush-test/blob/main/public/manifest.json
-- https://github.com/magicbell/webpush-test/blob/main/public/sw.js
+## Learn More
+
+- [MagicBell Docs](https://magicbell.com/docs)
+
+Please post any questions, feedback, or feature requests to [GitHub Discussions](https://magicbell.to/community).

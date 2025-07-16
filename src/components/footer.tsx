@@ -1,53 +1,30 @@
-import useDeviceInfo from "@/hooks/useDeviceInfo"
-import React, { useState } from "react"
-import Info from "./info"
-import * as Collapsible from "@radix-ui/react-collapsible"
-import Image from "next/image"
-
-export default function Footer(props: {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}) {
-  const info = useDeviceInfo()
-
+export default function Footer() {
   return (
-    <footer className="flex-shrink-0 w-full fixed bottom-0 border-primary border-opacity-50 border-t-2">
-      <Collapsible.Root
-        className="h-full"
-        open={props.open}
-        onOpenChange={props.setOpen}
+    <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <a
+        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        href="https://magicbell.com/docs"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <Collapsible.Trigger asChild>
-          <div
-            className="bg-section h-10 flex justify-center px-2 cursor-pointer icon-hoverable"
-            title="Toggle device details"
-          >
-            <div className="flex items-center justify-center gap-x-4 text-text font-light text-xs">
-              <span>Toggle device information</span>
-              {props.open ? (
-                <Image
-                  src="/arrow-down.svg"
-                  width={20}
-                  height={20}
-                  alt="arrow-down"
-                  className="icon-hover-down"
-                />
-              ) : (
-                <Image
-                  src="/arrow-up.svg"
-                  width={20}
-                  height={20}
-                  alt="arrow-up"
-                  className="icon-hover-up"
-                />
-              )}
-            </div>
-          </div>
-        </Collapsible.Trigger>
-        <Collapsible.Content>
-          {info && <Info info={info} />}
-        </Collapsible.Content>
-      </Collapsible.Root>
+        Docs
+      </a>
+      <a
+        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        href="https://magicbell.to/community"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Discuss on GitHub
+      </a>
+      <a
+        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+        href="https://github.com/magicbell/webpush-ios-template"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub Repo
+      </a>
     </footer>
-  )
+  );
 }
