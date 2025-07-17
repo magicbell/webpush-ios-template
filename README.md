@@ -1,8 +1,8 @@
 <div align="center"> 
 <a href="https://magicbell.com">
     <img src="public/logo-128x128.svg">
-    <h1>MagicBell</h1>
 </a>
+<h1>MagicBell</h1>
 
 <a href="https://magicbell.com/docs"><img alt="Read the MagicBell Docs" src="https://img.shields.io/badge/Read%20the%20docs-23283B.svg?style=for-the-badge"></a>
 <a href="https://magicbell.to/community"><img alt="Discuss on GitHub" src="https://img.shields.io/badge/Discuss%20on%20GitHub-black.svg?style=for-the-badge&logo=github&labelColor=000000&logoWidth=20"></a>
@@ -21,7 +21,7 @@ And the [broadcasts](https://www.magicbell.com/docs/primitive/broadcast) are sen
 > [!TIP]
 > You can also trigger broadcasts from the [MagicBell Dashboard](https://www.magicbell.com/docs/dashboard/broadcast#new-broadcast) without having to write any code.
 
-### Getting Started
+## Getting Started
 
 Clone the repository and run the development server:
 
