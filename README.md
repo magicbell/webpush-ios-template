@@ -15,8 +15,8 @@
 
 A minimal Next.js starter template for building Web Push Notification services with MagicBell.
 
-The Next.js app uses the [MagicBell's `WebPushButton` React Component](https://www.magicbell.com/docs/libraries/magicbell-react#webpushbutton) to subscribe a user to web push notifications.  
-And the [broadcasts](https://www.magicbell.com/docs/primitive/broadcast) are sent using the [MagicBell's Node Client](https://www.magicbell.com/docs/libraries/magicbell-js) using [Next.js's API Routes](https://nextjs.org/docs/api-routes/introduction).
+The Next.js app uses the MagicBell's [`WebPushButton` React Component](https://www.magicbell.com/docs/libraries/magicbell-react#webpushbutton) to subscribe a user to web push notifications.  
+And the [broadcasts](https://www.magicbell.com/docs/primitive/broadcast) are sent using the MagicBell's [Node Client](https://www.magicbell.com/docs/libraries/magicbell-js) using Next.js's [API Routes](https://nextjs.org/docs/api-routes/introduction).
 
 > [!TIP]
 > You can also trigger broadcasts from the [MagicBell Dashboard](https://www.magicbell.com/docs/dashboard/broadcast#new-broadcast) without having to write any code.
@@ -45,7 +45,7 @@ To start sending web push notifications you need to be signed in to your [MagicB
 Finally, replace the `userId` in `src/app/auth.ts` and `src/app/page.tsx` to make sure you're sending notifications to the correct user.
 
 > [!TIP]
-> You can find [detailed instructions on authentication in the MagicBell Docs](https://magicbell.com/docs/api/authentication).
+> You can find [detailed instructions on authentication](https://magicbell.com/docs/api/authentication) in the MagicBell Docs.
 
 You can now press the 'Subscribe' button to subscribe to web push notifications.  
 For sending notifications you can use the form in the template or the [MagicBell Dashboard](https://www.magicbell.com/docs/dashboard/broadcast#new-broadcast).
