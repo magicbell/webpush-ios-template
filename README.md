@@ -16,7 +16,7 @@
 A minimal Next.js starter template for building Web Push Notification services with MagicBell.
 
 The Next.js app uses the MagicBell's [`WebPushButton` React Component](https://www.magicbell.com/docs/libraries/magicbell-react#webpushbutton) to subscribe a user to web push notifications.  
-And the [broadcasts](https://www.magicbell.com/docs/primitive/broadcast) are sent using the MagicBell's [Node Client](https://www.magicbell.com/docs/libraries/magicbell-js) using Next.js's [API Routes](https://nextjs.org/docs/api-routes/introduction).
+And the [broadcasts](https://www.magicbell.com/docs/primitive/broadcast) are sent using the MagicBell's [Node Client](https://www.magicbell.com/docs/libraries/magicbell-js) using Next.js's [Route Handlers](https://nextjs.org/docs/app/api-reference/file-conventions/route).
 
 > [!TIP]
 > You can also trigger broadcasts from the [MagicBell Dashboard](https://www.magicbell.com/docs/dashboard/broadcast#new-broadcast) without having to write any code.
