@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Roboto_Mono } from "next/font/google";
 import { getUserToken } from "./auth";
 import Provider from "@magicbell/react/context-provider";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const robotoSans = Roboto({

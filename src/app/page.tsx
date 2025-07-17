@@ -2,16 +2,16 @@
 
 import { useState } from "react";
 import WebPushButton from "@magicbell/react/webpush-button";
-import Loading from "@/components/loading";
-import Logo from "@/components/logo";
-
-type Status = "idle" | "loading" | "success" | "error";
+import Loading from "@/components/Loading";
+import Logo from "@/components/Logo";
+import InstallPrompt from "@/components/InstallPrompt";
 
 export default function Home() {
   // Replace with your actual user ID or logic to retrieve it
   const userId = "7f4baab5-0c91-44e8-8b58-5ff849535174";
 
   const [formData, setFormData] = useState({ title: "", content: "" });
+  const [alert, setAlert] = useState<null | string>(null);
 
   const sendNotification = async () => {
     const res = await fetch("/api/send-notification", {
@@ -26,8 +26,13 @@ export default function Home() {
       }),
     });
 
-    const data = await res.json();
-    console.log(data);
+    if (res.status === 200) {
+      setAlert("🚀 The notification is on its way!");
+    } else {
+      const message = await res.text();
+      console.error(message);
+      setAlert(`❌ Something went wrong! Please check console.`);
+    }
   };
 
   return (
@@ -100,6 +105,8 @@ export default function Home() {
           Send Notification
         </button>
       </div>
+      <div className="h-4">{alert && <p>{alert}</p>}</div>
+      <InstallPrompt />
     </div>
   );
 }
