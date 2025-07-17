@@ -77,7 +77,7 @@ export default function Home() {
             name="Content"
             id="content"
             placeholder="Content"
-            className="w-full inline-flex items-center justify-between rounded-sm p-3 min-w-3xs transition bg-default hover:bg-hover active:bg-active focus:bg-active focus-within:bg-active min-h-10 border-0 m-0 outline-none h-full"
+            className="w-full inline-flex items-center justify-between rounded-sm p-3 min-w-3xs transition bg-default hover:bg-hover active:bg-active focus:bg-active focus-within:bg-active min-h-10 border-0 m-0 outline-none"
           />
         </div>
       </div>
