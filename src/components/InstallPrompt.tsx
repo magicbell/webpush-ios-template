@@ -16,8 +16,6 @@ export default function InstallPrompt() {
 
   return (
     <div>
-      <h3>Install App</h3>
-      <button>Add to Home Screen</button>
       <p>
         To install this app on your iOS device, tap the share button
         <span role="img" aria-label="share icon">
@@ -29,7 +27,6 @@ export default function InstallPrompt() {
           {" "}
           ➕{" "}
         </span>
-        .
       </p>
     </div>
   );
