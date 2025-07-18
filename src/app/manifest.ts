@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Web Push Next.js Template",
-    short_name: "Web Push Template",
+    short_name: "Web Push",
     description: "A minimal Web Push Next.js Starter Template using MagicBell",
     start_url: "/",
     display: "standalone",
