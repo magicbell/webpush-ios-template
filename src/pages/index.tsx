@@ -188,6 +188,17 @@ export default function Home() {
             <Links />
             <SeoText />
             <Disclaimer />
+            <div className="mx-auto text-center mb-4">
+              Learn about{" "}
+              <a
+                href="https://apimason.com"
+                target="_blank"
+                className="text-indigo-400 hover:text-indigo-300"
+              >
+                APImason
+              </a>{" "}
+              by MagicBell
+            </div>
           </div>
         )}
       </main>
