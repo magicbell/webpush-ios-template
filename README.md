@@ -1,3 +1,5 @@
+> **Update:** This project has evolved into [PWA Inbox](https://github.com/magicbell/pwa-inbox) — a throwaway push notification inbox built with Preact, Hono, and Cloudflare Workers. Check it out at [pwainbox.com](https://pwainbox.com).
+
 # About this project
 
 Apple released [beta](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados) support for Web Push notifications on iOS in February 2023, and made it official with the release of iOS 16.5 in [May 2023](https://www.macrumors.com/2023/05/09/apple-confirms-ios-16-5-release-date/).
